@@ -1,33 +1,33 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "jerzy_string.h"
+#include "JerzyString.h"
 #include <string>
 #include <stdexcept>
 
-jerzy_string::jerzy_string() : str(nullptr), length(0)
+JerzyString::JerzyString() : str(nullptr), length(0)
 {
 }
 
-jerzy_string::jerzy_string(const char* str)
+JerzyString::JerzyString(const char* str)
 {
 	this->length = strlen(str);
 	this->str = new char[length + 1];
 	strcpy(this->str, str);
 }
 
-jerzy_string::jerzy_string(const jerzy_string& str)
+JerzyString::JerzyString(const JerzyString& str)
 {
 	this->length = str.length;
 	this->str = new char[length + 1];
 	strcpy(this->str, str.str);
 }
 
-jerzy_string::~jerzy_string()
+JerzyString::~JerzyString()
 {
 	if (str != nullptr)
 		delete[] str;
 }
 
-jerzy_string& jerzy_string::operator=(const jerzy_string& str)
+JerzyString& JerzyString::operator=(const JerzyString& str)
 {
 	if (this->str != nullptr)
 		delete[] this->str;
@@ -38,7 +38,7 @@ jerzy_string& jerzy_string::operator=(const jerzy_string& str)
 	return *this;
 }
 
-jerzy_string& jerzy_string::operator=(const char* str)
+JerzyString& JerzyString::operator=(const char* str)
 {
 	if (this->str != nullptr)
 		delete[] this->str;
@@ -49,7 +49,7 @@ jerzy_string& jerzy_string::operator=(const char* str)
 	return *this;
 }
 
-jerzy_string& jerzy_string::operator+=(const jerzy_string& str)
+JerzyString& JerzyString::operator+=(const JerzyString& str)
 {
 	if (this->str == nullptr)
 	{
@@ -71,7 +71,7 @@ jerzy_string& jerzy_string::operator+=(const jerzy_string& str)
 	return *this;
 }
 
-jerzy_string& jerzy_string::operator+=(const char* str)
+JerzyString& JerzyString::operator+=(const char* str)
 {
 	if (this->str == nullptr)
 	{
@@ -93,21 +93,21 @@ jerzy_string& jerzy_string::operator+=(const char* str)
 	return *this;
 }
 
-char& jerzy_string::operator[](int index)
+char& JerzyString::operator[](int index)
 {
 	if (index < 0 || index >= length)
 		throw std::out_of_range("Index out of range");
 	return str[index];
 }
 
-const char& jerzy_string::operator[](int index) const
+const char& JerzyString::operator[](int index) const
 {
 	if (index < 0 || index >= length)
 		throw std::out_of_range("Index out of range");
 	return str[index];
 }
 
-bool jerzy_string::operator==(const jerzy_string& str) const
+bool JerzyString::operator==(const JerzyString& str) const
 {
 	if (this->length != str.length)
 		return false;
@@ -119,7 +119,7 @@ bool jerzy_string::operator==(const jerzy_string& str) const
 	return true;
 }
 
-bool jerzy_string::operator==(const char* str) const
+bool JerzyString::operator==(const char* str) const
 {
 	if (this->length != strlen(str))
 		return false;
@@ -132,12 +132,12 @@ bool jerzy_string::operator==(const char* str) const
 	return true;
 }
 
-int jerzy_string::getLength() const
+int JerzyString::getLength() const
 {
 	return length;
 }
 
-const char* jerzy_string::c_str() const
+const char* JerzyString::c_str() const
 {
 	return str;
 }

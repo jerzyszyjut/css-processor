@@ -18,12 +18,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="jerzy_string.cpp">
+    <ClCompile Include="JerzyString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JerzyList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="jerzy_string.h">
+    <ClInclude Include="JerzyString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JerzyList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
