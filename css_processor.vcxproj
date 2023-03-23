@@ -127,11 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="JerzyString.cpp" />
-    <ClCompile Include="JerzyList.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Attribute.h" />
     <ClInclude Include="JerzyString.h" />
     <ClInclude Include="JerzyList.h" />
   </ItemGroup>

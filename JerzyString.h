@@ -14,6 +14,10 @@ public:
 	const char& operator[](int index) const;
 	bool operator==(const JerzyString& str) const;
 	bool operator==(const char* str) const;
+	int find(char c) const;
+	JerzyString substring(int start, int end) const;
+	JerzyString substring(int start) const;
+	void trim();
 	int getLength() const;
 	const char* c_str() const;
 private:
