@@ -10,6 +10,7 @@ public:
 	JerzyString& operator=(const char* str);
 	JerzyString& operator+=(const JerzyString& str);
 	JerzyString& operator+=(const char* str);
+	JerzyString& operator+=(char c);
 	char& operator[](int index);
 	const char& operator[](int index) const;
 	bool operator==(const JerzyString& str) const;
@@ -18,6 +19,7 @@ public:
 	JerzyString substring(int start, int end) const;
 	JerzyString substring(int start) const;
 	void trim();
+	void clear();
 	int getLength() const;
 	const char* c_str() const;
 private:

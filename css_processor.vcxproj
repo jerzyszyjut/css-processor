@@ -130,11 +130,13 @@
     <ClCompile Include="Attribute.cpp" />
     <ClCompile Include="JerzyString.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Section.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h" />
     <ClInclude Include="JerzyString.h" />
     <ClInclude Include="JerzyList.h" />
+    <ClInclude Include="Section.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

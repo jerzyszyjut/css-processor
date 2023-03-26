@@ -93,9 +93,33 @@ JerzyString& JerzyString::operator+=(const char* str)
 	return *this;
 }
 
+JerzyString& JerzyString::operator+=(char c)
+{
+	if (this->str == nullptr)
+	{
+		this->length = 1;
+		this->str = new char[length + 1];
+		this->str[0] = c;
+		this->str[1] = '\0';
+	}
+	else
+	{
+		char* temp = new char[length + 1];
+		strcpy(temp, this->str);
+		delete[] this->str;
+		this->length++;
+		this->str = new char[length + 1];
+		strcpy(this->str, temp);
+		this->str[length - 1] = c;
+		this->str[length] = '\0';
+		delete[] temp;
+	}
+	return *this;
+}
+
 char& JerzyString::operator[](int index)
 {
-	if (index < 0 || index >= length)
+	if (index < 0 || index > length)
 		throw std::out_of_range("Index out of range");
 	return str[index];
 }
@@ -174,11 +198,13 @@ JerzyString JerzyString::substring(int start) const
 
 void JerzyString::trim()
 {
+	if (length == 0)
+		return;
 	int start = 0;
 	int end = length - 1;
-	while ((str[start] == ' ') || (str[start] = '\n') || (str[start] == '\t'))
+	while (((str[start] == ' ') || (str[start] == '\n') || (str[start] == '\t')) && (start <= end))
 		start++;
-	while ((str[start] == ' ') || (str[start] = '\n') || (str[start] == '\t'))
+	while (((str[end] == ' ') || (str[end] == '\n') || (str[end] == '\t')) && (end >= start))
 		end--;
 	char* temp = new char[end - start + 2];
 	for (int i = start; i <= end; i++)
@@ -191,6 +217,15 @@ void JerzyString::trim()
 	this->str = new char[length + 1];
 	strcpy(this->str, temp);
 	delete[] temp;
+}
+
+void JerzyString::clear()
+{
+	if (str != nullptr) {
+		delete[] str;
+		str = nullptr;
+	}
+	length = 0;
 }
 
 int JerzyString::getLength() const
