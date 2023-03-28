@@ -9,10 +9,12 @@ private:
 public:
 	JerzyList<JerzyString> selectors;
 	JerzyList<Attribute> attributes;
-	void parseSection(JerzyString& section);
-	void parseSelectors(JerzyString& selectors_string);
-	void parseAttributes(JerzyString& attributes_string);
+	void parseSelectors(JerzyString &section_string, int start, int end);
+	void parseAttributes(JerzyString &section_string, int start, int end);
 	Section();
+	Section(JerzyString &section);
+	Section(const Section &section);
+	Section(const Section &&section);
+	Section &operator=(const Section &section);
 	~Section();
 };
-
