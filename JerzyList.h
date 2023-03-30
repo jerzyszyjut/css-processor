@@ -1,211 +1,309 @@
 #pragma once
-#define BLOCK_SIZE 3
+#define BLOCK_SIZE 8
+#include <stdexcept>
 
 template <typename T>
 struct Node
 {
-	T *value;
-	Node *next;
-	Node *prev;
+	T* value;
+	Node* next;
+	Node* prev;
+	int size;
 };
 
-template <typename T>
+template <typename T, int K>
 class JerzyList
 {
 public:
 	JerzyList();
-	JerzyList(const JerzyList<T> &list);
-	JerzyList(int block_size);
+	JerzyList(const JerzyList<T, K>& list);
 	~JerzyList();
-	JerzyList<T> &operator=(const JerzyList<T> &list);
-	void push_back(const T &value);
-	void insert(int index, const T &value);
+	JerzyList<T, K>& operator=(const JerzyList<T, K>& list);
+	JerzyList<T, K>& operator=(const int other);
+	void push_back(const T& value);
+	void replace(int index, const T& value);
 	void remove(int index);
 	void clear();
-	int find(const T &value);
+	int find(const T& value);
 	int getLength() const;
-	int getBlockSize() const;
-	T &operator[](int index);
-	const T &operator[](int index) const;
+	T& operator[](int index);
+	const T& operator[](int index) const;
+	bool operator==(const int other) const;
 
 private:
-	Node<T> *head;
-	Node<T> *tail;
-	int length, block_size;
+	Node<T>* head;
+	Node<T>* tail;
+	int length;
 };
 
-template <typename T>
-inline JerzyList<T>::JerzyList() : head(nullptr), tail(nullptr), length(0), block_size(BLOCK_SIZE)
+template<typename T, int K>
+inline JerzyList<T, K>::JerzyList() : head(nullptr), tail(nullptr), length(0)
 {
 }
 
-template <typename T>
-inline JerzyList<T>::JerzyList(const JerzyList<T> &list) : block_size(BLOCK_SIZE)
+template<typename T, int K>
+inline JerzyList<T, K>::JerzyList(const JerzyList<T, K>& list)
 {
 	this->head = list.head;
 	this->tail = list.tail;
 	this->length = list.length;
-	this->block_size = list.block_size;
 }
 
-template <typename T>
-inline JerzyList<T>::JerzyList(int block_size) : head(nullptr), tail(nullptr), length(0), block_size(block_size)
-{
-}
-
-template <typename T>
-inline JerzyList<T>::~JerzyList()
+template<typename T, int K>
+inline JerzyList<T, K>::~JerzyList()
 {
 	this->clear();
 }
 
-template <typename T>
-inline JerzyList<T> &JerzyList<T>::operator=(const JerzyList<T> &list)
+template<typename T, int K>
+inline JerzyList<T, K>& JerzyList<T, K>::operator=(const JerzyList<T, K>& list)
 {
 	if (this != &list)
 	{
 		this->head = list.head;
 		this->tail = list.tail;
 		this->length = list.length;
-		this->block_size = list.block_size;
 	}
 	return *this;
 }
 
-template <typename T>
-inline void JerzyList<T>::push_back(const T &value)
+template<typename T, int K>
+inline JerzyList<T, K>& JerzyList<T, K>::operator=(const int other)
 {
-	if (length % block_size == 0)
+	if (other == NULL)
 	{
-		Node<T> *temp = new Node<T>;
-		temp->value = new T[block_size];
-		temp->value[0] = value;
-		temp->next = nullptr;
-		temp->prev = tail;
-		if (tail != nullptr)
-			tail->next = temp;
-		tail = temp;
-		if (head == nullptr)
-			head = temp;
+		this->clear();
 	}
-	else
-	{
-		tail->value[length % block_size] = value;
+	return *this;
+}
+
+template<typename T, int K>
+inline void JerzyList<T, K>::push_back(const T& value)
+{
+	if (head == nullptr) {
+		head = new Node<T>;
+		head->value = new T[K];
+		head->value[0] = value;
+		head->size = 1;
+		head->next = nullptr;
+		head->prev = nullptr;
+		tail = head;
+	}
+	else {
+		if (tail->size == K) {
+			Node<T>* temp = new Node<T>;
+			temp->value = new T[K];
+			temp->value[0] = value;
+			temp->size = 1;
+			temp->next = nullptr;
+			temp->prev = tail;
+			tail->next = temp;
+			tail = temp;
+		}
+		else {
+			Node<T>* temp = tail;
+			int counter = 0;
+			for (int i = 0; i < K; i++) {
+				if ((counter == temp->size) && (i < K)) {
+					temp->value[i] = value;
+					temp->size++;
+					this->length++;
+					return;
+				}
+				if (temp != nullptr) counter++;
+			}
+			temp = new Node<T>;
+			temp->value = new T[K];
+			temp->value[0] = value;
+			temp->size = 1;
+			temp->next = nullptr;
+			temp->prev = tail;
+			tail->next = temp;
+			tail = temp;
+		}
 	}
 	length++;
 }
 
-template <typename T>
-inline void JerzyList<T>::insert(int index, const T &value)
+template<typename T, int K>
+inline void JerzyList<T, K>::replace(int index, const T& value)
 {
-	if (index >= 0 && index < length)
-	{
-		Node<T> *temp = head;
-		for (int i = 0; i < length; i += block_size)
-		{
-			if (i == index)
-			{
-				break;
-			}
-			temp = temp->next;
-		}
-		for (int i = index; i < length; i += block_size)
-		{
-			if (i == index)
-			{
-				temp->value[i % block_size] = value;
-			}
-			else
-			{
-				temp->value[i % block_size] = temp->next->value[(i + 1) % block_size];
-			}
-			temp = temp->next;
-		}
-	}
+	delete this->operator[](index);
+	this->operator[](index) = value;
 }
 
-template <typename T>
-inline void JerzyList<T>::remove(int index)
+template<typename T, int K>
+inline void JerzyList<T, K>::remove(int index)
 {
-	if (this->length == 0)
+	if (index < 0 || index > length)
 	{
 		return;
 	}
-}
 
-template <typename T>
-inline void JerzyList<T>::clear()
-{
-	while (head != nullptr)
+	int current_index = 0;
+	Node<T>* temp = head;
+
+	while (temp != nullptr && ((current_index + temp->size) < index))
 	{
-		Node<T> *temp = head;
-		head = head->next;
-		delete[] temp->value;
-		delete temp;
+		current_index += temp->size;
+		temp = temp->next;
 	}
-	length = 0;
-}
 
-template <typename T>
-inline int JerzyList<T>::find(const T &value)
-{
-	for (int i = 0; i < length; i++)
+	if (temp != nullptr)
 	{
-		if (this->operator[](i) == value)
+		int nothing = NULL;
+
+		for (int i = 0; i < temp->size; i++)
 		{
-			return i;
+			if (temp->value[i] == nothing) index++;
+		}
+		temp->value[index - current_index] = nothing;
+		temp->size--;
+		length--;
+	}
+
+	if (temp->size == 0) {
+		if (temp->prev != nullptr && temp->next != nullptr)
+		{
+			temp->prev->next = temp->next;
+			temp->next->prev = temp->prev;
+			delete temp;
+		}
+		else if (temp->prev == nullptr && temp->next != nullptr)
+		{
+			temp->next->prev = nullptr;
+			head = temp->next;
+			delete temp;
+		}
+		else if (temp->prev != nullptr && temp->next == nullptr)
+		{
+			temp->prev->next = nullptr;
+			tail = temp->prev;
+			delete temp;
+		}
+		else
+		{
+			head = nullptr;
+			tail = nullptr;
+			delete temp;
 		}
 	}
 }
 
-template <typename T>
-inline int JerzyList<T>::getLength() const
+template<typename T, int K>
+inline void JerzyList<T, K>::clear()
+{
+	Node<T>* temp = head;
+	while (temp != nullptr)
+	{
+		Node<T>* temp2 = temp;
+		temp = temp->next;
+		delete[] temp2->value;
+		delete temp2;
+	}
+	head = nullptr;
+	tail = nullptr;
+	length = 0;
+}
+
+template<typename T, int K>
+inline int JerzyList<T, K>::find(const T& value)
+{
+	Node<T>* temp = head;
+	int counter = 0;
+	while (temp != nullptr)
+	{
+		for (int i = 0; i < temp->size; i++)
+		{
+			if (temp->value[i] == value) return counter;
+			int nothing = NULL;
+			if (!(temp->value[i] == nothing)) counter++;
+		}
+		temp = temp->next;
+	}
+	return -1;
+}
+
+template<typename T, int K>
+inline int JerzyList<T, K>::getLength() const
 {
 	return length;
 }
 
-template <typename T>
-inline int JerzyList<T>::getBlockSize() const
+template<typename T, int K>
+inline T& JerzyList<T, K>::operator[](int index)
 {
-	return 0;
-}
+	if (index < 0 || index > length)
+		throw std::out_of_range("Index out of range");
 
-template <typename T>
-inline T &JerzyList<T>::operator[](int index)
-{
-	if (index >= 0 && index < length)
+	int current_index = 0, i;
+	Node<T>* temp = head;
+
+	while (temp != nullptr && ((current_index + temp->size) <= index))
 	{
-		Node<T> *temp = head;
-		for (int i = 0; i < length; i += block_size)
+		current_index += temp->size;
+		temp = temp->next;
+	}
+
+	if (temp != nullptr)
+	{
+		int nothing = NULL;
+
+		for (i = 0; i < temp->size; i++)
 		{
-			for (int j = 0; j < block_size; j++)
+			if (current_index == index)
 			{
-				if ((j + i) == index)
-				{
-					return temp->value[j];
-				}
+				break;
 			}
-			temp = temp->next;
+			if (!(temp->value[i] == nothing))
+			{
+				current_index++;
+			}
 		}
+
+		while (temp->value[i] == nothing)
+		{
+			i++;
+		}
+
+		return temp->value[i];
 	}
 }
 
-template <typename T>
-inline const T &JerzyList<T>::operator[](int index) const
+template<typename T, int K>
+inline const T& JerzyList<T, K>::operator[](int index) const
 {
-	if (index >= 0 && index < length)
+	if (index < 0 || index > length)
 	{
-		Node<T> *temp = head;
-		for (int i = 0; i < length; i += block_size)
-		{
-			for (int j = 0; j < block_size; j++)
-			{
-				if ((j + i) == index)
-				{
-					return temp->value[j];
-				}
-			}
-			temp = temp->next;
-		}
+		return;
 	}
+
+	int current_index = 0;
+	Node<T>* temp = head;
+
+	while (temp != nullptr && ((current_index + temp->size) < index))
+	{
+		current_index += temp->size;
+		temp = temp->next;
+	}
+
+	if (temp != nullptr)
+	{
+		int nothing = NULL;
+
+		for (int i = 0; i < temp->size; i++)
+		{
+			if (!(temp->value[i] == nothing)) current_index++;
+		}
+		return temp->value[index - current_index];
+	}
+}
+
+template<typename T, int K>
+inline bool JerzyList<T, K>::operator==(const int other) const
+{
+	if (this->length == 0 && other == NULL) {
+		return true;
+	}
+	return false;
 }

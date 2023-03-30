@@ -3,21 +3,23 @@
 #include <string.h>
 #include <stdexcept>
 
-JerzyString::JerzyString() : str(nullptr), length(0)
+JerzyString::JerzyString() : str(nullptr), length(0), size(0)
 {
 }
 
-JerzyString::JerzyString(const char *str)
+JerzyString::JerzyString(const char* str)
 {
 	this->length = strlen(str);
-	this->str = new char[get_initial_size(length) + 1];
+	this->size = get_initial_size(length) + 1;
+	this->str = new char[size];
 	strcpy(this->str, str);
 }
 
-JerzyString::JerzyString(const JerzyString &str)
+JerzyString::JerzyString(const JerzyString& str)
 {
 	this->length = str.length;
-	this->str = new char[get_initial_size(length) + 1];
+	this->size = str.size;
+	this->str = new char[size];
 	strcpy(this->str, str.c_str());
 }
 
@@ -27,120 +29,148 @@ JerzyString::~JerzyString()
 		delete[] str;
 }
 
-JerzyString &JerzyString::operator=(const JerzyString &str)
+JerzyString& JerzyString::operator=(const JerzyString& str)
 {
 	if (this->str != nullptr)
 		delete[] this->str;
 	this->length = str.length;
+	this->size = str.size;
+	this->str = new char[size];
 	strcpy(this->str, str.str);
-
 	return *this;
 }
 
-JerzyString &JerzyString::operator=(const JerzyString &&str)
+JerzyString& JerzyString::operator=(const char* str)
 {
+	if (str == nullptr) {
+		this->length = 0;
+		this->size = 1;
+		delete[] this->str;
+		this->str = new char[1];
+		this->str[0] = '\0';
+		return *this;
+	}
+
 	if (this->str != nullptr)
 		delete[] this->str;
-	this->length = str.length;
-	strcpy(this->str, str.str);
 
-	return *this;
-}
-
-JerzyString &JerzyString::operator=(const char *str)
-{
-	if (this->str != nullptr)
-		delete[] this->str;
 	this->length = strlen(str);
-	this->str = new char[get_initial_size(length) + 1];
-	strcpy(this->str, str);
+	this->size = get_initial_size(length) + 1;
 
+	char* temp = new char[size];
+	strncpy(temp, str, size - 1);
+	temp[size - 1] = '\0';
+
+	this->str = temp;
 	return *this;
 }
 
-JerzyString &JerzyString::operator+=(const JerzyString &str)
+JerzyString& JerzyString::operator+=(const JerzyString& str)
 {
 	if (this->str == nullptr)
 	{
 		this->length = str.length;
-		this->str = new char[get_initial_size(length) + 1];
+		this->size = get_initial_size(length) + 1;
+		this->str = new char[size];
 		strcpy(this->str, str.str);
 	}
 	else
 	{
-		char *temp = new char[length + 1];
-		strcpy(temp, this->str);
-		delete[] this->str;
 		this->length += str.length;
-		this->str = new char[get_initial_size(length) + 1];
-		strcpy(this->str, temp);
-		strcat(this->str, str.str);
-		delete[] temp;
+		if (this->length < this->size) {
+			strcat(this->str, str.str);
+		}
+		else
+		{
+			char* temp = new char[size];
+			this->size = get_initial_size(length) + 1;
+			strcpy(temp, this->str);
+			delete[] this->str;
+			this->str = new char[size];
+			strcpy(this->str, temp);
+			strcat(this->str, str.str);
+			delete[] temp;
+		}
 	}
+	this->str[length] = '\0';
 	return *this;
 }
 
-JerzyString &JerzyString::operator+=(const char *str)
+JerzyString& JerzyString::operator+=(const char* str)
 {
 	if (this->str == nullptr)
 	{
 		this->length = strlen(str);
-		this->str = new char[length + 1];
+		this->size = get_initial_size(length) + 1;
+		this->str = new char[size];
 		strcpy(this->str, str);
 	}
 	else
 	{
-		char *temp = new char[get_initial_size(length) + 1];
-		strcpy(temp, this->str);
-		delete[] this->str;
 		this->length += strlen(str);
-		this->str = new char[get_initial_size(length) + 1];
-		strcpy(this->str, temp);
-		strcat(this->str, str);
-		delete[] temp;
+		if (this->length < this->size) {
+			strcat(this->str, str);
+		}
+		else
+		{
+			char* temp = new char[size];
+			this->size = get_initial_size(length) + 1;
+			strcpy(temp, this->str);
+			delete[] this->str;
+			this->str = new char[size];
+			strcpy(this->str, temp);
+			strcat(this->str, str);
+			delete[] temp;
+		}
 	}
+	this->str[length] = '\0';
 	return *this;
 }
 
-JerzyString &JerzyString::operator+=(char c)
+JerzyString& JerzyString::operator+=(char c)
 {
 	if (this->str == nullptr)
 	{
 		this->length = 1;
-		this->str = new char[get_initial_size(length) + 1];
+		this->size = get_initial_size(length) + 1;
+		this->str = new char[size];
 		this->str[0] = c;
-		this->str[1] = '\0';
 	}
-	else
-	{
-		char *temp = new char[get_initial_size(length) + 1];
-		strcpy(temp, this->str);
-		delete[] this->str;
-		this->length++;
-		this->str = new char[get_initial_size(length) + 1];
-		strcpy(this->str, temp);
-		this->str[length - 1] = c;
-		this->str[length] = '\0';
-		delete[] temp;
+	else {
+		this->length += 1;
+		if (this->length < this->size) {
+			this->str[length - 1] = c;
+		}
+		else {
+			char* temp = new char[size];
+			this->size = get_initial_size(length) + 1;
+			strcpy(temp, this->str);
+			delete[] this->str;
+			this->str = new char[size];
+			strcpy(this->str, temp);
+			this->str[length - 1] = c;
+			delete[] temp;
+		}
 	}
+	this->str[length] = '\0';
 	return *this;
 }
 
-char &JerzyString::operator[](int index)
+char& JerzyString::operator[](int index)
 {
 	if (index < 0 || index > length)
 		throw std::out_of_range("Index out of range");
 	return str[index];
 }
 
-const char &JerzyString::operator[](int index) const
+const char& JerzyString::operator[](int index) const
 {
 	if (index < 0 || index >= length)
 		throw std::out_of_range("Index out of range");
 	return str[index];
 }
 
-bool JerzyString::operator==(const JerzyString &str) const
+bool JerzyString::operator==(const JerzyString& str) const
 {
 	if (this->length != str.length)
 		return false;
@@ -152,7 +182,7 @@ bool JerzyString::operator==(const JerzyString &str) const
 	return true;
 }
 
-bool JerzyString::operator==(const char *str) const
+bool JerzyString::operator==(const char* str) const
 {
 	if (this->length != strlen(str))
 		return false;
@@ -168,6 +198,18 @@ bool JerzyString::operator==(const char *str) const
 int JerzyString::find(char c) const
 {
 	for (int i = 0; i < length; i++)
+	{
+		if (this->str[i] == c)
+			return i;
+	}
+	return -1;
+}
+
+int JerzyString::find(char c, int start) const
+{
+	if (start < 0 || start >= length)
+		throw std::out_of_range("Index out of range");
+	for (int i = start; i < length; i++)
 	{
 		if (this->str[i] == c)
 			return i;
@@ -203,7 +245,12 @@ int JerzyString::getLength() const
 	return length;
 }
 
-const char *JerzyString::c_str() const
+int JerzyString::getSize() const
+{
+	return size;
+}
+
+const char* JerzyString::c_str() const
 {
 	return str;
 }

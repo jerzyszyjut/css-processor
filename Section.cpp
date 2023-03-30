@@ -21,41 +21,35 @@ void Section::parseSelectors(JerzyString &section_string, int start, int end)
 
 void Section::parseAttributes(JerzyString &section_string, int start, int end)
 {
-	JerzyString temp;
-	for (int i = start; i < end; i++)
-	{
-		temp += section_string[i];
-		if (section_string[i] == ';')
-		{
-			attributes.push_back(Attribute(temp));
-			temp.clear();
-		}
+	int cursor = start, next_semicolon_position = section_string.find(';', start);
+	while (next_semicolon_position != -1 && next_semicolon_position < end) {
+		attributes.push_back(Attribute(section_string, cursor, next_semicolon_position));
+		cursor = next_semicolon_position + 1;
+		next_semicolon_position = section_string.find(';', cursor);
 	}
-	if (temp.find(':') > 0)
+	if (section_string.find(':', cursor) > 0)
 	{
-		temp += ';';
-		attributes.push_back(Attribute(temp));
+		attributes.push_back(Attribute(section_string, cursor, section_string.getLength() + 1));
 	}
-	temp.clear();
 }
 
 Section::Section()
 {
 }
 
-Section::Section(JerzyString &section)
+Section::Section(JerzyString &section, int start, int end)
 {
-	int open_bracket_position = section.find('{');
+	int open_bracket_position = section.find('{', start);
 	if (open_bracket_position == -1)
 	{
 		selectors.push_back("global");
-		attributes.push_back(Attribute(section));
+		attributes.push_back(Attribute(section, start, end));
 	}
 	else
 	{
-		int close_bracket_position = section.find('}');
+		int close_bracket_position = section.find('}', start);
 
-		this->parseSelectors(section, 0, open_bracket_position);
+		this->parseSelectors(section, start, open_bracket_position);
 		this->parseAttributes(section, open_bracket_position + 1, close_bracket_position - 1);
 	}
 }
@@ -66,10 +60,11 @@ Section::Section(const Section &section)
 	this->attributes = section.attributes;
 }
 
-Section::Section(const Section &&section)
+Section::Section(const int something)
 {
-	this->selectors = section.selectors;
-	this->attributes = section.attributes;
+	if (something == NULL) {
+
+	}
 }
 
 Section &Section::operator=(const Section &section)
@@ -79,6 +74,21 @@ Section &Section::operator=(const Section &section)
 	return *this;
 }
 
+bool Section::operator==(const int other) const
+{
+	if (this->selectors.getLength() == 0 && this->attributes.getLength() == 0 && other == NULL) {
+		return true;
+	}
+	return false;
+}
+
+void Section::clear()
+{
+	this->attributes.clear();
+	this->selectors.clear();
+}
+
 Section::~Section()
 {
+	this->clear();
 }

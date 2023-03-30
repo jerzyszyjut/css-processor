@@ -41,5 +41,8 @@
     <ClInclude Include="Section.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JerzyLinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,10 +11,8 @@ public:
 	JerzyString(const JerzyString &str);
 	~JerzyString();
 	JerzyString &operator=(const JerzyString &str);
-	JerzyString &operator=(const JerzyString &&str);
 	JerzyString &operator=(const char *str);
 	JerzyString &operator+=(const JerzyString &str);
-	JerzyString &operator+=(const JerzyString &&str);
 	JerzyString &operator+=(const char *str);
 	JerzyString &operator+=(char c);
 	char &operator[](int index);
@@ -22,12 +20,14 @@ public:
 	bool operator==(const JerzyString &str) const;
 	bool operator==(const char *str) const;
 	int find(char c) const;
+	int find(char c, int start) const;
 	int toInt() const;
 	void clear();
 	int getLength() const;
+	int getSize() const;
 	const char *c_str() const;
 
 private:
 	char *str;
-	int length;
+	int length, size;
 };

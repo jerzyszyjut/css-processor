@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h" />
+    <ClInclude Include="JerzyLinkedList.h" />
     <ClInclude Include="JerzyString.h" />
     <ClInclude Include="JerzyList.h" />
     <ClInclude Include="Section.h" />
