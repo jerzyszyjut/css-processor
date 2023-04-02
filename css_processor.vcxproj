@@ -19,10 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="jstring.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Section.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="jiterators.h" />
+    <ClInclude Include="jstring.h" />
     <ClInclude Include="Section.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

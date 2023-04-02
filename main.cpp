@@ -1,7 +1,7 @@
 #include <iostream>
-#include <string>
 #include <list>
 #include "Section.h"
+#include "jstring.h"
 #define ESCAPE_CSS_PARSING_SPECIAL_CHARACTER '?'
 #define ESCAPE_COMMAND_PARSING_SPECIAL_CHARACTER '*'
 #define ESCAPE_CHARACTER_COUNT 4
@@ -15,10 +15,10 @@ bool is_a_number(char c) {
 	return false;
 }
 
-bool load_input(list<string>* keywords) {
+bool load_input(list<jstring>* keywords) {
 	bool in_section = false, in_attribute = false;
 	int special_character_count = 0;
-	string input = "";
+	jstring input = "";
 	char c;
 	while ((c = getchar()) != EOF) {
 		if (c < ' ') {
@@ -37,8 +37,8 @@ bool load_input(list<string>* keywords) {
 
 		if (c == '{') {
 			in_section = true;
-			if (input.length() > 0 && input[input.length() - 1] == ' ') {
-				input = input.substr(0, input.length() - 1);
+			if (input.get_length() > 0 && input[input.get_length() - 1] == ' ') {
+				input = input.substring(0, input.get_length() - 1);
 			}
 			keywords->push_back(input);
 			input = c;
@@ -85,11 +85,11 @@ bool load_input(list<string>* keywords) {
 	return false;
 }
 
-void load_sections(list<Section>* sections, list<string>* keywords) {
+void load_sections(list<Section>* sections, list<jstring>* keywords) {
 	Section* section = new Section();
 	bool in_section = false;
-	string* previous_keyword = NULL;
-	for (list<string>::iterator it = keywords->begin(); it != keywords->end(); it++) {
+	jstring* previous_keyword = NULL;
+	for (list<jstring>::iterator it = keywords->begin(); it != keywords->end(); it++) {
 		if (*it == "{") {
 			in_section = true;
 		}
@@ -100,9 +100,9 @@ void load_sections(list<Section>* sections, list<string>* keywords) {
 		}
 		else {
 			if (!in_section) {
-				string trimmed_selector_value, value = *it;
+				jstring trimmed_selector_value, value = *it;
 				bool reached_proper_string = false;
-				for (string::iterator it = value.begin(); it != value.end(); it++) {
+				for (jstring::iterator it = value.begin(); it != value.end(); it++) {
 					if (*it == ',') continue;
 					if (*it == ' ') {
 						if (reached_proper_string) {
@@ -115,15 +115,15 @@ void load_sections(list<Section>* sections, list<string>* keywords) {
 					}
 				}
 
-				if (trimmed_selector_value.length() > 0) {
+				if (trimmed_selector_value.get_length() > 0) {
 					section->addSelector(trimmed_selector_value);
 				}
 			}
 			else if (in_section) {
 				if (*it == ":") {
-					string trimmed_attribute_value, value = *(++it);
+					jstring trimmed_attribute_value, value = *(++it);
 					bool reached_proper_string = false;
-					for (string::iterator it = value.begin(); it != value.end(); it++) {
+					for (jstring::iterator it = value.begin(); it != value.end(); it++) {
 						if (*it == ' ') {
 							if (reached_proper_string) {
 								trimmed_attribute_value += *it;
@@ -145,8 +145,10 @@ void load_sections(list<Section>* sections, list<string>* keywords) {
 }
 
 bool handle_commands(list<Section>* sections) {
-	string command_line;
-	while (cin >> command_line) {
+	jstring command_line;
+	while (cin >> command_line || (!cin.eof() || command_line.get_length() > 0)) {
+		if(command_line.get_length() == 0) continue;
+
 		if (command_line[0] == ESCAPE_COMMAND_PARSING_SPECIAL_CHARACTER)
 			return true;
 
@@ -160,8 +162,8 @@ bool handle_commands(list<Section>* sections) {
 		if (command_line[first_comma_position + 2] != ',') continue;
 
 		char command = command_line[first_comma_position + 1];
-		string selector = command_line.substr(0, first_comma_position);
-		string value = command_line.substr(first_comma_position + 3, command_line.length() - first_comma_position - 3);
+		jstring selector = command_line.substring(0, first_comma_position);
+		jstring value = command_line.substring(first_comma_position + 3, command_line.get_length() - first_comma_position - 3);
 
 		if (command == 'S') {
 			if (is_a_number(selector[0])) {
@@ -181,7 +183,7 @@ bool handle_commands(list<Section>* sections) {
 				}
 				else if (is_a_number(value[0])) {
 					int selector_index = atoi(value.c_str()) - 1;
-					string* selector_name = it->getSelector(selector_index);
+					jstring* selector_name = it->getSelector(selector_index);
 					if (selector_name == NULL) continue;
 					cout << selector << "," << command << "," << value << " == " << *selector_name << endl;
 				}
@@ -211,7 +213,7 @@ bool handle_commands(list<Section>* sections) {
 					cout << selector << "," << command << "," << value << " == " << it->getAttributeCount() << endl;
 				}
 				else {
-					string* selector_name = it->getAttribute(&value);
+					jstring* selector_name = it->getAttribute(&value);
 					if (selector_name == NULL) continue;
 					cout << selector << "," << command << "," << value << " == " << *selector_name << endl;
 				}
@@ -233,7 +235,7 @@ bool handle_commands(list<Section>* sections) {
 				}
 			}
 			if (last_section == NULL) continue;
-			string* attribute = last_section->getAttribute(&value);
+			jstring* attribute = last_section->getAttribute(&value);
 			if (attribute == NULL) continue;
 			cout << selector << "," << command << "," << value << " == " << *(attribute) << endl;
 		}
@@ -268,7 +270,8 @@ bool handle_commands(list<Section>* sections) {
 }
 
 int main() {
-	list<string>* keywords = new list<string>();
+	
+	list<jstring>* keywords = new list<jstring>();
 	list<Section>* sections = new list<Section>();
 
 	while (true)
@@ -277,6 +280,7 @@ int main() {
 		load_sections(sections, keywords);
 		if (!handle_commands(sections)) break;
 	}
+	
 
 	return 0;
 }

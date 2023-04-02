@@ -1,18 +1,18 @@
 #pragma once
 #include <list>
-#include <string>
+#include "jstring.h"
 
 
 struct attribute
 {
-	std::string name;
-	std::string value;
+	jstring name;
+	jstring value;
 };
 
 class Section
 {
 private:
-	std::list<std::string> selectors;
+	std::list<jstring> selectors;
 	std::list<attribute> attributes;
 
 public:
@@ -20,17 +20,17 @@ public:
 	~Section();
 
 	bool isEmpty();
-	bool deleteAtribute(std::string* name);
-	bool selectorExists(std::string* selector);
+	bool deleteAtribute(jstring* name);
+	bool selectorExists(jstring* selector);
 	int getAttributeCount();
 	int getSelectorCount();
-	int getAttributeOccurances(std::string* selector);
-	int getSelectorOccurances(std::string* selector);
-	std::string* getAttribute(std::string* name);
-	std::string* getAttribute(int index);
-	std::string* getSelector(int index);
-	void addAttribute(std::string name, std::string value);
-	void addSelector(std::string selector);
+	int getAttributeOccurances(jstring* selector);
+	int getSelectorOccurances(jstring* selector);
+	jstring* getAttribute(jstring* name);
+	jstring* getAttribute(int index);
+	jstring* getSelector(int index);
+	void addAttribute(jstring name, jstring value);
+	void addSelector(jstring selector);
 
 	void print();
 };

@@ -1,9 +1,10 @@
 #include <iostream>
 #include "Section.h"
+#include "jstring.h"
 
 Section::Section()
 {
-	this->selectors = std::list<std::string>();
+	this->selectors = std::list<jstring>();
 	this->attributes = std::list<attribute>();
 }
 
@@ -20,7 +21,7 @@ bool Section::isEmpty()
 	return false;
 }
 
-bool Section::deleteAtribute(std::string* name)
+bool Section::deleteAtribute(jstring* name)
 {
 	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
@@ -33,7 +34,7 @@ bool Section::deleteAtribute(std::string* name)
 	return false;
 }
 
-std::string* Section::getAttribute(std::string* name)
+jstring* Section::getAttribute(jstring* name)
 {
 	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
@@ -45,7 +46,7 @@ std::string* Section::getAttribute(std::string* name)
 	return NULL;
 }
 
-std::string* Section::getAttribute(int index)
+jstring* Section::getAttribute(int index)
 {
 	if(index < 0 || index >= this->attributes.size())
 		return NULL;
@@ -71,7 +72,7 @@ int Section::getSelectorCount()
 	return this->selectors.size();
 }
 
-int Section::getAttributeOccurances(std::string* selector)
+int Section::getAttributeOccurances(jstring* selector)
 {
 	int count = 0;
 	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
@@ -84,10 +85,10 @@ int Section::getAttributeOccurances(std::string* selector)
 	return count;
 }
 
-int Section::getSelectorOccurances(std::string* selector)
+int Section::getSelectorOccurances(jstring* selector)
 {
 	int count = 0;
-	for (std::list<std::string>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (*it == *selector)
 		{
@@ -97,12 +98,12 @@ int Section::getSelectorOccurances(std::string* selector)
 	return count;
 }
 
-std::string* Section::getSelector(int index)
+jstring* Section::getSelector(int index)
 {
 	if(index < 0 || index >= this->selectors.size())
 		return NULL;
 	int i = 0;
-	for (std::list<std::string>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (i == index)
 		{
@@ -113,9 +114,9 @@ std::string* Section::getSelector(int index)
 	return NULL;
 }
 
-bool Section::selectorExists(std::string* selector)
+bool Section::selectorExists(jstring* selector)
 {
-	for (std::list<std::string>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (*it == *selector)
 		{
@@ -125,9 +126,9 @@ bool Section::selectorExists(std::string* selector)
 	return false;
 }
 
-void Section::addAttribute(std::string name, std::string value)
+void Section::addAttribute(jstring name, jstring value)
 {
-	std::string* existing_attribute = this->getAttribute(&name);
+	jstring* existing_attribute = this->getAttribute(&name);
 	if (existing_attribute != NULL)
 	{
 		*existing_attribute = value;
@@ -139,7 +140,7 @@ void Section::addAttribute(std::string name, std::string value)
 	this->attributes.push_back(attr);
 }
 
-void Section::addSelector(std::string selector)
+void Section::addSelector(jstring selector)
 {
 	if(this->selectorExists(&selector))
 		return;
@@ -148,7 +149,7 @@ void Section::addSelector(std::string selector)
 
 void Section::print()
 {
-	for (std::list<std::string>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		std::cout << *it << " ";
 	}

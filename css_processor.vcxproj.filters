@@ -21,9 +21,18 @@
     <ClCompile Include="Section.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="jstring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Section.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jstring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jiterators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
