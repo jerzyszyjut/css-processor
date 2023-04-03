@@ -39,6 +39,17 @@ jstring::jstring(jstring&& other)
 	}
 }
 
+jstring::jstring(int other)
+{
+	if (other == 0)
+	{
+		this->len = 0;
+		this->size = get_block_size(this->len);
+		this->str = new char[this->size];
+		this->str[this->len] = '\0';
+	}
+}
+
 jstring::~jstring()
 {
 	if (this->str != nullptr)
@@ -95,6 +106,21 @@ jstring& jstring::operator=(jstring&& other)
 		delete[] this->str;
 	this->str = other.str;
 	other.str = nullptr;
+
+	return *this;
+}
+
+jstring& jstring::operator=(int other)
+{
+	if (other == NULL)
+	{
+		this->len = 0;
+		this->size = get_block_size(this->len);
+		if (this->str != nullptr)
+			delete[] this->str;
+		this->str = new char[this->size];
+		this->str[this->len] = '\0';
+	}
 
 	return *this;
 }
@@ -208,6 +234,19 @@ bool jstring::operator==(jstring& other)
 			return false;
 	}
 	return true;
+}
+
+bool jstring::operator==(int other)
+{
+	if (other == NULL)
+	{
+		if (this->len == 0)
+			return true;
+		else
+			return false;
+	}
+	else
+		return false;
 }
 
 bool jstring::operator!=(const char* str)

@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jiterators.h" />
+    <ClInclude Include="jlist.h" />
     <ClInclude Include="jstring.h" />
     <ClInclude Include="Section.h" />
   </ItemGroup>

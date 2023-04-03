@@ -35,5 +35,8 @@
     <ClInclude Include="jiterators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="jlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

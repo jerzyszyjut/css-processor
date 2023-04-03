@@ -17,12 +17,14 @@ public:
 	jstring(const char* str);
 	jstring(const jstring& str);
 	jstring(jstring&& other);
+	jstring(int other);
 	~jstring();
 
 	jstring& operator=(char str);
 	jstring& operator=(const char* str);
 	jstring& operator=(jstring& other);
 	jstring& operator=(jstring&& other);
+	jstring& operator=(int other);
 
 	jstring& operator+=(char str);
 	jstring& operator+=(const char* str);
@@ -34,6 +36,7 @@ public:
 
 	bool operator==(const char* str);
 	bool operator==(jstring& other);
+	bool operator==(int other);
 
 	bool operator!=(const char* str);
 	bool operator!=(jstring& other);

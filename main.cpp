@@ -2,6 +2,7 @@
 #include <list>
 #include "Section.h"
 #include "jstring.h"
+#include "jlist.h"
 #define ESCAPE_CSS_PARSING_SPECIAL_CHARACTER '?'
 #define ESCAPE_COMMAND_PARSING_SPECIAL_CHARACTER '*'
 #define ESCAPE_CHARACTER_COUNT 4
@@ -269,8 +270,22 @@ bool handle_commands(list<Section>* sections) {
 	return false;
 }
 
+void load_inputs(jlist<jstring>* piwo_list) {
+	jstring input;
+	for (int i = 0; i < 5; i++) {
+		cin >> input;
+		piwo_list->push_back(input);
+	}
+}
+
+void print_inputs(jlist<jstring>* piwo_list) {
+	for (jlist<jstring>::iterator it = piwo_list->begin(); it.current != NULL; it++) {
+		cout << *it << endl;
+	}
+}
+
 int main() {
-	
+	/*
 	list<jstring>* keywords = new list<jstring>();
 	list<Section>* sections = new list<Section>();
 
@@ -280,7 +295,10 @@ int main() {
 		load_sections(sections, keywords);
 		if (!handle_commands(sections)) break;
 	}
-	
+	*/
+	jlist<jstring>* piwo_list = new jlist<jstring>();
+	load_inputs(piwo_list);
+	print_inputs(piwo_list);
 
 	return 0;
 }
