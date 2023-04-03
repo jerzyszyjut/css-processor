@@ -1,22 +1,29 @@
 #pragma once
-#include <list>
+#include "jlinkedlist.h"
 #include "jstring.h"
 
-
-struct attribute
-{
+class attribute {
+public:
 	jstring name;
 	jstring value;
+
+	attribute();
+	attribute(jstring name, jstring value);
+	~attribute();
+
+	bool operator==(const char* str);
+	bool operator==(attribute& attr);
 };
 
 class Section
 {
 private:
-	std::list<jstring> selectors;
-	std::list<attribute> attributes;
+	jlinkedlist<jstring> selectors;
+	jlinkedlist<attribute> attributes;
 
 public:
 	Section();
+	Section(Section& other);
 	~Section();
 
 	bool isEmpty();
@@ -31,6 +38,10 @@ public:
 	jstring* getSelector(int index);
 	void addAttribute(jstring name, jstring value);
 	void addSelector(jstring selector);
+
+	bool operator==(Section& other);
+
+	Section& operator=(Section& other);
 
 	void print();
 };

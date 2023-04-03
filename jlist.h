@@ -32,6 +32,7 @@ public:
 
 	void push_back(T value);
 	void erase(T& item);
+	void erase(int index);
 	void clear();
 	int size();
 	bool empty();
@@ -127,6 +128,10 @@ public:
 		}
 		bool operator!=(const iterator& other)
 		{
+			if (this->current == nullptr || other.current == nullptr)
+			{
+				return false;
+			}
 			return (this->current != other.current || this->index != other.index);
 		}
 
@@ -257,9 +262,19 @@ public:
 		return iterator(head, 0);
 	}
 
+	iterator end()
+	{
+		return iterator(tail, tail->size);
+	}
+
 	reverse_iterator rbegin()
 	{
 		return reverse_iterator(tail, tail->size - 1);
+	}
+
+	reverse_iterator rend()
+	{
+		return reverse_iterator(head, -1);
 	}
 
 private:
@@ -287,26 +302,68 @@ inline jlist<T>::~jlist()
 template<typename T>
 inline void jlist<T>::push_back(T value)
 {
+	int index = 0;
 	if (tail->size == block_size)
 	{
 		BlockNode<T>* new_tail = new BlockNode<T>(block_size);
 		tail->next = new_tail;
 		new_tail->prev = tail;
 		tail = new_tail;
-		new_tail->data[0] = value;
 	}
 	else
 	{
-		tail->data[tail->size] = value;
-		tail->size++;
+		index = tail->size;
 	}
+	tail->data[index] = value;
+	tail->size++;
+	length++;
 }
 
 template<typename T>
 inline void jlist<T>::erase(T& item)
 {
 	BlockNode<T>* current = head;
-	bool found = false;
+	while (current != nullptr)
+	{
+		for (int i = 0; i < current->size; i++)
+		{
+			if (current->data[i] == item)
+			{
+				for (int j = i; j < current->size - 1; j++)
+				{
+					current->data[j] = current->data[j + 1];
+				}
+				current->size--;
+				length--;
+				return;
+			}
+		}
+		current = current->next;
+	}
+}
+
+template<typename T>
+inline void jlist<T>::erase(int index)
+{
+	BlockNode<T>* current = head;
+	while (current != nullptr)
+	{
+		if (index < current->size)
+		{
+			for (int j = index; j < current->size - 1; j++)
+			{
+				current->data[j] = current->data[j + 1];
+			}
+			current->size--;
+			length--;
+			return;
+		}
+		else
+		{
+			index -= current->size;
+		}
+		current = current->next;
+	}
 }
 
 template<typename T>

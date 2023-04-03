@@ -38,5 +38,8 @@
     <ClInclude Include="jlist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="jlinkedlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

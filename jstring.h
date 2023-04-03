@@ -3,7 +3,6 @@
 #include <iostream>
 #include "jiterators.h"
 #define STRING_BLOCK_SIZE 64
-#define BUFFER_SIZE
 
 size_t get_block_size(size_t len);
 

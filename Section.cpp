@@ -4,8 +4,14 @@
 
 Section::Section()
 {
-	this->selectors = std::list<jstring>();
-	this->attributes = std::list<attribute>();
+	this->selectors = jlinkedlist<jstring>();
+	this->attributes = jlinkedlist<attribute>();
+}
+
+Section::Section(Section& other)
+{
+	this->selectors = *(new jlinkedlist<jstring>(other.selectors));
+	this->attributes = *(new jlinkedlist<attribute>(other.attributes));
 }
 
 Section::~Section()
@@ -23,11 +29,11 @@ bool Section::isEmpty()
 
 bool Section::deleteAtribute(jstring* name)
 {
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		if (it->name == *name)
 		{
-			this->attributes.erase(it);
+			this->attributes.erase(*it);
 			return true;
 		}
 	}
@@ -36,7 +42,7 @@ bool Section::deleteAtribute(jstring* name)
 
 jstring* Section::getAttribute(jstring* name)
 {
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		if (it->name == *name)
 		{
@@ -51,7 +57,7 @@ jstring* Section::getAttribute(int index)
 	if(index < 0 || index >= this->attributes.size())
 		return NULL;
 	int i = 0;
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		if (i == index)
 		{
@@ -75,7 +81,7 @@ int Section::getSelectorCount()
 int Section::getAttributeOccurances(jstring* selector)
 {
 	int count = 0;
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		if (it->name == *selector)
 		{
@@ -88,7 +94,7 @@ int Section::getAttributeOccurances(jstring* selector)
 int Section::getSelectorOccurances(jstring* selector)
 {
 	int count = 0;
-	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (jlinkedlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (*it == *selector)
 		{
@@ -103,7 +109,7 @@ jstring* Section::getSelector(int index)
 	if(index < 0 || index >= this->selectors.size())
 		return NULL;
 	int i = 0;
-	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (jlinkedlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (i == index)
 		{
@@ -116,7 +122,7 @@ jstring* Section::getSelector(int index)
 
 bool Section::selectorExists(jstring* selector)
 {
-	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (jlinkedlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (*it == *selector)
 		{
@@ -134,9 +140,7 @@ void Section::addAttribute(jstring name, jstring value)
 		*existing_attribute = value;
 		return;
 	}
-	attribute attr;
-	attr.name = name;
-	attr.value = value;
+	attribute attr(name, value);
 	this->attributes.push_back(attr);
 }
 
@@ -147,16 +151,62 @@ void Section::addSelector(jstring selector)
 	this->selectors.push_back(selector);
 }
 
+bool Section::operator==(Section& other)
+{
+	if (&(this->selectors) == &(other.selectors) && &(this->attributes) != &(other.attributes))
+			return true;
+	return false;
+}
+
+Section& Section::operator=(Section& other)
+{
+	this->selectors = *(new jlinkedlist<jstring>(other.selectors));
+	this->attributes = *(new jlinkedlist<attribute>(other.attributes));
+	return *this;
+}
+
 void Section::print()
 {
-	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (jlinkedlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		std::cout << *it << " ";
 	}
 	std::cout << "{" << std::endl;
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		std::cout << "\t" << it->name << ":" << it->value << ";" << std::endl;
 	}
 	std::cout << "}" << std::endl;
+}
+
+attribute::attribute()
+{
+	name = "";
+	value = "";
+}
+
+attribute::attribute(jstring name, jstring value)
+{
+	this->name = name;
+	this->value = value;
+}
+
+attribute::~attribute()
+{
+}
+
+bool attribute::operator==(const char* str)
+{
+	if (this->name == str)
+		return true;
+
+	return false;
+}
+
+bool attribute::operator==(attribute& attr)
+{
+	if (this->name == attr.name)
+		return true;
+
+	return false;
 }
