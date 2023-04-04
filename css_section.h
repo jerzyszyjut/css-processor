@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include "jlinkedlist.h"
 #include "jstring.h"
 
 
@@ -9,15 +9,15 @@ struct attribute
 	jstring value;
 };
 
-class Section
+class css_section
 {
 private:
-	std::list<jstring> selectors;
-	std::list<attribute> attributes;
+	jlinkedlist<jstring> selectors;
+	jlinkedlist<attribute> attributes;
 
 public:
-	Section();
-	~Section();
+	css_section();
+	~css_section();
 
 	bool isEmpty();
 	bool deleteAtribute(jstring* name);

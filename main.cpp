@@ -1,6 +1,6 @@
 #include <iostream>
 #include <list>
-#include "Section.h"
+#include "css_section.h"
 #include "jstring.h"
 #define ESCAPE_CSS_PARSING_SPECIAL_CHARACTER '?'
 #define ESCAPE_COMMAND_PARSING_SPECIAL_CHARACTER '*'
@@ -85,8 +85,8 @@ bool load_input(list<jstring>* keywords) {
 	return false;
 }
 
-void load_sections(list<Section>* sections, list<jstring>* keywords) {
-	Section* section = new Section();
+void load_sections(list<css_section>* sections, list<jstring>* keywords) {
+	css_section* section = new css_section();
 	bool in_section = false;
 	jstring* previous_keyword = NULL;
 	for (list<jstring>::iterator it = keywords->begin(); it != keywords->end(); it++) {
@@ -96,7 +96,7 @@ void load_sections(list<Section>* sections, list<jstring>* keywords) {
 		else if (*it == "}") {
 			in_section = false;
 			sections->push_back(*section);
-			section = new Section();
+			section = new css_section();
 		}
 		else {
 			if (!in_section) {
@@ -144,7 +144,7 @@ void load_sections(list<Section>* sections, list<jstring>* keywords) {
 	keywords->clear();
 }
 
-bool handle_commands(list<Section>* sections) {
+bool handle_commands(list<css_section>* sections) {
 	jstring command_line;
 	while (cin >> command_line || (!cin.eof() || command_line.get_length() > 0)) {
 		if(command_line.get_length() == 0) continue;
@@ -173,7 +173,7 @@ bool handle_commands(list<Section>* sections) {
 					continue;
 				}
 
-				list<Section>::iterator it = sections->begin();
+				list<css_section>::iterator it = sections->begin();
 				for (int i = 0; i < index; i++) {
 					it++;
 				}
@@ -190,7 +190,7 @@ bool handle_commands(list<Section>* sections) {
 			}
 			else if (value[0] == '?') {
 				int occurance_count = 0;
-				for (list<Section>::iterator it = sections->begin(); it != sections->end(); it++) {
+				for (list<css_section>::iterator it = sections->begin(); it != sections->end(); it++) {
 					occurance_count += it->getSelectorOccurances(&selector);
 				}
 				cout << selector << "," << command << "," << value << " == " << occurance_count << endl;
@@ -204,7 +204,7 @@ bool handle_commands(list<Section>* sections) {
 					continue;
 				}
 
-				list<Section>::iterator it = sections->begin();
+				list<css_section>::iterator it = sections->begin();
 				for (int i = 0; i < index; i++) {
 					it++;
 				}
@@ -220,15 +220,15 @@ bool handle_commands(list<Section>* sections) {
 			}
 			else if (value[0] == '?') {
 				int occurance_count = 0;
-				for (list<Section>::iterator it = sections->begin(); it != sections->end(); it++) {
+				for (list<css_section>::iterator it = sections->begin(); it != sections->end(); it++) {
 					occurance_count += it->getAttributeOccurances(&selector);
 				}
 				cout << selector << "," << command << "," << value << " == " << occurance_count << endl;
 			}
 		}
 		else if (command == 'E') {
-			Section* last_section = NULL;
-			for (list<Section>::reverse_iterator it = sections->rbegin(); it != sections->rend(); it++) {
+			css_section* last_section = NULL;
+			for (list<css_section>::reverse_iterator it = sections->rbegin(); it != sections->rend(); it++) {
 				if (it->selectorExists(&selector)) {
 					last_section = &(*it);
 					break;
@@ -246,7 +246,7 @@ bool handle_commands(list<Section>* sections) {
 				continue;
 			}
 
-			list<Section>::iterator it = sections->begin();
+			list<css_section>::iterator it = sections->begin();
 			for (int i = 0; i < index; i++) {
 				it++;
 			}
@@ -270,9 +270,8 @@ bool handle_commands(list<Section>* sections) {
 }
 
 int main() {
-	
 	list<jstring>* keywords = new list<jstring>();
-	list<Section>* sections = new list<Section>();
+	list<css_section>* sections = new list<css_section>();
 
 	while (true)
 	{
