@@ -28,7 +28,11 @@ class jlist
 {
 public:
 	jlist();
+	jlist(const jlist& other);
 	~jlist();
+
+	jlist& operator=(const jlist& other);
+	bool operator==(const jlist& other);
 
 	void push_back(T value);
 	void erase(T& item);
@@ -41,17 +45,22 @@ public:
 		BlockNode<T>* current;
 		int index;
 
-		iterator(BlockNode<T>* node, int index)
-		{
-			this->current = node;
-			this->index = index;
-		}
-
-	public:
 		iterator()
 		{
 			this->current = head;
 			this->index = 0;
+		}
+
+		iterator(int other)
+		{
+			this->current = nullptr;
+			this->index = other;
+		}
+
+		iterator(BlockNode<T>* node, int index)
+		{
+			this->current = node;
+			this->index = index;
 		}
 
 		iterator(const iterator& other)
@@ -127,6 +136,10 @@ public:
 		}
 		bool operator!=(const iterator& other)
 		{
+			if (this->current == nullptr)
+				return false;
+			if (this->current->data[index] == NULL)
+				return false;
 			return (this->current != other.current || this->index != other.index);
 		}
 
@@ -150,18 +163,24 @@ public:
 		BlockNode<T>* current;
 		int index;
 
-		reverse_iterator(BlockNode<T>* current, int index)
-		{
-			this->current = current;
-			this->index = index;
-		}
-
-	public:
 		reverse_iterator()
 		{
 			this->current = tail;
 			this->index = tail->size;
 		}
+
+		reverse_iterator(int other)
+		{
+			this->current = nullptr;
+			this->index = other;
+		}
+
+		reverse_iterator(BlockNode<T>* current, int index)
+		{
+			this->current = current;
+			this->index = index;
+		}
+		
 		reverse_iterator(const reverse_iterator& other)
 		{
 			this->current = other.current;
@@ -235,6 +254,10 @@ public:
 		}
 		bool operator!=(const reverse_iterator& other)
 		{
+			if (this->current == nullptr)
+				return false;
+			if (this->current->data[index] == NULL)
+				return false;
 			return (this->current != other.current || this->index != other.index);
 		}
 
@@ -257,9 +280,19 @@ public:
 		return iterator(head, 0);
 	}
 
+	iterator end()
+	{
+		return NULL;
+	}
+
 	reverse_iterator rbegin()
 	{
 		return reverse_iterator(tail, tail->size - 1);
+	}
+
+	reverse_iterator rend()
+	{
+		return NULL;
 	}
 
 private:
@@ -279,9 +312,50 @@ inline jlist<T>::jlist()
 }
 
 template<typename T>
+inline jlist<T>::jlist(const jlist& other)
+{
+	this->block_size = other.block_size;
+	this->length = 0;
+	BlockNode<T>* current = other.head;
+	while (current != nullptr)
+	{
+		for (int i = 0; i < current->size; i++)
+		{
+			this->push_back(current->data[i]);
+		}
+		current = current->next;
+	}
+}
+
+template<typename T>
 inline jlist<T>::~jlist()
 {
 	this->clear();
+}
+
+template<typename T>
+inline jlist<T>& jlist<T>::operator=(const jlist& other)
+{
+	this->block_size = other.block_size;
+	this->length = 0;
+	BlockNode<T>* current = other.head;
+	while (current != nullptr)
+	{
+		for (int i = 0; i < current->size; i++)
+		{
+			this->push_back(current->data[i]);
+		}
+		current = current->next;
+	}
+	return *this;
+}
+
+template<typename T>
+inline bool jlist<T>::operator==(const jlist& other)
+{
+	if (this->length != other.length)
+		return false;
+	return true;
 }
 
 template<typename T>
@@ -298,15 +372,31 @@ inline void jlist<T>::push_back(T value)
 	else
 	{
 		tail->data[tail->size] = value;
-		tail->size++;
 	}
+	tail->size++;
+	length++;
 }
 
 template<typename T>
 inline void jlist<T>::erase(T& item)
 {
 	BlockNode<T>* current = head;
-	bool found = false;
+	while (current != nullptr)
+	{
+		for (int i = 0; i < current->size; i++)
+		{
+			if (&(current->data[i]) == &(item))
+			{
+				for (int j = i; j < current->size - 1; j++)
+				{
+					current->data[j] = current->data[j + 1];
+				}
+				current->size--;
+				return;
+			}
+		}
+		current = current->next;
+	}
 }
 
 template<typename T>
@@ -315,8 +405,9 @@ inline void jlist<T>::clear()
 	BlockNode<T>* current = head;
 	while (current != nullptr)
 	{
-		BlockNode<T>* next = current->next;
-		current = next;
+		BlockNode<T>* temp = current;
+		current = current->next;
+		delete temp;
 	}
 
 	block_size = BLOCK_LIST_BLOCK_SIZE;

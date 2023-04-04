@@ -5,9 +5,8 @@
 jstring::jstring()
 {
 	this->len = 0;
-	this->size = get_block_size(this->len);
-	this->str = new char[this->size];
-	this->str[this->len] = '\0';
+	this->size = 0;
+	this->str = NULL;
 }
 
 jstring::jstring(const char* str)
@@ -89,8 +88,6 @@ jstring& jstring::operator=(jstring& other)
 {
 	this->len = other.len;
 	this->size = other.size;
-	if (this->str != nullptr)
-		delete[] this->str;
 	this->str = new char[this->size];
 	strncpy(this->str, other.str, this->len);
 	this->str[this->len] = '\0';

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <list>
 #include "Section.h"
 #include "jstring.h"
 #include "jlist.h"
@@ -16,7 +15,7 @@ bool is_a_number(char c) {
 	return false;
 }
 
-bool load_input(list<jstring>* keywords) {
+bool load_input(jlist<jstring>* keywords) {
 	bool in_section = false, in_attribute = false;
 	int special_character_count = 0;
 	jstring input = "";
@@ -86,11 +85,11 @@ bool load_input(list<jstring>* keywords) {
 	return false;
 }
 
-void load_sections(list<Section>* sections, list<jstring>* keywords) {
+void load_sections(jlist<Section>* sections, jlist<jstring>* keywords) {
 	Section* section = new Section();
 	bool in_section = false;
 	jstring* previous_keyword = NULL;
-	for (list<jstring>::iterator it = keywords->begin(); it != keywords->end(); it++) {
+	for (jlist<jstring>::iterator it = keywords->begin(); it != keywords->end(); it++) {
 		if (*it == "{") {
 			in_section = true;
 		}
@@ -145,7 +144,7 @@ void load_sections(list<Section>* sections, list<jstring>* keywords) {
 	keywords->clear();
 }
 
-bool handle_commands(list<Section>* sections) {
+bool handle_commands(jlist<Section>* sections) {
 	jstring command_line;
 	while (cin >> command_line || (!cin.eof() || command_line.get_length() > 0)) {
 		if(command_line.get_length() == 0) continue;
@@ -174,7 +173,7 @@ bool handle_commands(list<Section>* sections) {
 					continue;
 				}
 
-				list<Section>::iterator it = sections->begin();
+				jlist<Section>::iterator it = sections->begin();
 				for (int i = 0; i < index; i++) {
 					it++;
 				}
@@ -191,7 +190,7 @@ bool handle_commands(list<Section>* sections) {
 			}
 			else if (value[0] == '?') {
 				int occurance_count = 0;
-				for (list<Section>::iterator it = sections->begin(); it != sections->end(); it++) {
+				for (jlist<Section>::iterator it = sections->begin(); it != sections->end(); it++) {
 					occurance_count += it->getSelectorOccurances(&selector);
 				}
 				cout << selector << "," << command << "," << value << " == " << occurance_count << endl;
@@ -205,7 +204,7 @@ bool handle_commands(list<Section>* sections) {
 					continue;
 				}
 
-				list<Section>::iterator it = sections->begin();
+				jlist<Section>::iterator it = sections->begin();
 				for (int i = 0; i < index; i++) {
 					it++;
 				}
@@ -221,7 +220,7 @@ bool handle_commands(list<Section>* sections) {
 			}
 			else if (value[0] == '?') {
 				int occurance_count = 0;
-				for (list<Section>::iterator it = sections->begin(); it != sections->end(); it++) {
+				for (jlist<Section>::iterator it = sections->begin(); it != sections->end(); it++) {
 					occurance_count += it->getAttributeOccurances(&selector);
 				}
 				cout << selector << "," << command << "," << value << " == " << occurance_count << endl;
@@ -229,7 +228,7 @@ bool handle_commands(list<Section>* sections) {
 		}
 		else if (command == 'E') {
 			Section* last_section = NULL;
-			for (list<Section>::reverse_iterator it = sections->rbegin(); it != sections->rend(); it++) {
+			for (jlist<Section>::reverse_iterator it = sections->rbegin(); it != sections->rend(); it++) {
 				if (it->selectorExists(&selector)) {
 					last_section = &(*it);
 					break;
@@ -247,20 +246,20 @@ bool handle_commands(list<Section>* sections) {
 				continue;
 			}
 
-			list<Section>::iterator it = sections->begin();
+			jlist<Section>::iterator it = sections->begin();
 			for (int i = 0; i < index; i++) {
 				it++;
 			}
 
 			if (value[0] == '*') {
-				sections->erase(it);
+				sections->erase(*it);
 				cout << selector << "," << command << "," << value << " == deleted" << endl;
 			}
 			else {
 				if (it->getAttribute(&value) != NULL) {
 					it->deleteAtribute(&value);
 					if (it->isEmpty()) {
-						sections->erase(it);
+						sections->erase(*it);
 					}
 					cout << selector << "," << command << "," << value << " == deleted" << endl;
 				}
@@ -285,9 +284,8 @@ void print_inputs(jlist<jstring>* piwo_list) {
 }
 
 int main() {
-	/*
-	list<jstring>* keywords = new list<jstring>();
-	list<Section>* sections = new list<Section>();
+	jlist<jstring>* keywords = new jlist<jstring>();
+	jlist<Section>* sections = new jlist<Section>();
 
 	while (true)
 	{
@@ -295,10 +293,6 @@ int main() {
 		load_sections(sections, keywords);
 		if (!handle_commands(sections)) break;
 	}
-	*/
-	jlist<jstring>* piwo_list = new jlist<jstring>();
-	load_inputs(piwo_list);
-	print_inputs(piwo_list);
 
 	return 0;
 }

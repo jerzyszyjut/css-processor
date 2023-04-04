@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include "jlist.h"
 #include "jstring.h"
 
 
@@ -7,17 +7,36 @@ struct attribute
 {
 	jstring name;
 	jstring value;
+
+	bool operator==(attribute& other)
+	{
+		if (this->name == other.name)
+			return true;
+		return false;
+	}
+
+	bool operator==(int other)
+	{
+		if (this->name.get_length() == other)
+			return true;
+		return false;
+	}
 };
 
 class Section
 {
 private:
-	std::list<jstring> selectors;
-	std::list<attribute> attributes;
+	jlist<jstring> selectors;
+	jlist<attribute> attributes;
 
 public:
 	Section();
+	Section(Section& other);
 	~Section();
+
+	Section& operator=(Section& other);
+	bool operator==(Section& other);
+	bool operator==(int other);
 
 	bool isEmpty();
 	bool deleteAtribute(jstring* name);

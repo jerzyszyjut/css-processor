@@ -1,17 +1,45 @@
 #include <iostream>
 #include "Section.h"
 #include "jstring.h"
+#include "jlist.h"
 
 Section::Section()
 {
-	this->selectors = std::list<jstring>();
-	this->attributes = std::list<attribute>();
+	this->selectors = *(new jlist<jstring>);
+	this->attributes = *(new jlist<attribute>);
+}
+
+Section::Section(Section& other)
+{
+	this->selectors = other.selectors;
+	this->attributes = other.attributes;
 }
 
 Section::~Section()
 {
 	selectors.clear();
 	attributes.clear();
+}
+
+Section& Section::operator=(Section& other)
+{
+	this->selectors = other.selectors;
+	this->attributes = other.attributes;
+	return *this;
+}
+
+bool Section::operator==(Section& other)
+{
+	if (this->selectors == other.selectors && this->attributes == other.attributes)
+		return true;
+	return false;
+}
+
+bool Section::operator==(int other)
+{
+	if (this->selectors.size() == other && this->attributes.size() == other)
+		return true;
+	return false;
 }
 
 bool Section::isEmpty()
@@ -23,11 +51,11 @@ bool Section::isEmpty()
 
 bool Section::deleteAtribute(jstring* name)
 {
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		if (it->name == *name)
 		{
-			this->attributes.erase(it);
+			this->attributes.erase(*it);
 			return true;
 		}
 	}
@@ -36,7 +64,7 @@ bool Section::deleteAtribute(jstring* name)
 
 jstring* Section::getAttribute(jstring* name)
 {
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		if (it->name == *name)
 		{
@@ -51,7 +79,7 @@ jstring* Section::getAttribute(int index)
 	if(index < 0 || index >= this->attributes.size())
 		return NULL;
 	int i = 0;
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		if (i == index)
 		{
@@ -75,7 +103,7 @@ int Section::getSelectorCount()
 int Section::getAttributeOccurances(jstring* selector)
 {
 	int count = 0;
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		if (it->name == *selector)
 		{
@@ -88,7 +116,7 @@ int Section::getAttributeOccurances(jstring* selector)
 int Section::getSelectorOccurances(jstring* selector)
 {
 	int count = 0;
-	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (jlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (*it == *selector)
 		{
@@ -103,7 +131,7 @@ jstring* Section::getSelector(int index)
 	if(index < 0 || index >= this->selectors.size())
 		return NULL;
 	int i = 0;
-	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (jlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (i == index)
 		{
@@ -116,7 +144,7 @@ jstring* Section::getSelector(int index)
 
 bool Section::selectorExists(jstring* selector)
 {
-	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (jlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		if (*it == *selector)
 		{
@@ -149,12 +177,12 @@ void Section::addSelector(jstring selector)
 
 void Section::print()
 {
-	for (std::list<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
+	for (jlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
 		std::cout << *it << " ";
 	}
 	std::cout << "{" << std::endl;
-	for (std::list<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
+	for (jlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
 		std::cout << "\t" << it->name << ":" << it->value << ";" << std::endl;
 	}
