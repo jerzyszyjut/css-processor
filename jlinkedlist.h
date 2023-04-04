@@ -76,9 +76,8 @@ inline jlinkedlist<T>::jlinkedlist() : head(nullptr), tail(nullptr), length(0)
 template<typename T>
 inline jlinkedlist<T>::jlinkedlist(T* data)
 {
-	Node<T>* temp = new Node<T>(*data);
-	this->head = temp;
-	this->tail = temp;
+	head = new Node<T>(*data);
+	tail = head;
 	length = 1;
 }
 

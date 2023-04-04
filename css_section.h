@@ -17,6 +17,7 @@ private:
 
 public:
 	css_section();
+	css_section(css_section* other);
 	~css_section();
 
 	bool isEmpty();

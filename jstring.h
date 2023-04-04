@@ -16,6 +16,7 @@ public:
 	jstring();
 	jstring(const char* str);
 	jstring(const jstring& str);
+	jstring(jstring* str);
 	jstring(jstring&& other);
 	~jstring();
 

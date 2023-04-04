@@ -28,6 +28,15 @@ jstring::jstring(const jstring& str)
 	this->str[this->len] = '\0';
 }
 
+jstring::jstring(jstring* str)
+{
+	this->len = str->len;
+	this->size = str->size;
+	this->str = new char[this->size];
+	strncpy(this->str, str->str, this->len);
+	this->str[this->len] = '\0';
+}
+
 jstring::jstring(jstring&& other)
 {
 	if (this != &other)

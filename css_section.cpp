@@ -8,6 +8,12 @@ css_section::css_section()
 	this->attributes = jlinkedlist<attribute>();
 }
 
+css_section::css_section(css_section* other)
+{
+	this->selectors = other->selectors;
+	this->attributes = other->attributes;
+}
+
 css_section::~css_section()
 {
 	selectors.clear();

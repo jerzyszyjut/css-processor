@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="jlinkedlist.cpp" />
     <ClCompile Include="jstring.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="css_section.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="jblocklist.h" />
     <ClInclude Include="jiterators.h" />
     <ClInclude Include="jlinkedlist.h" />
     <ClInclude Include="jstring.h" />
