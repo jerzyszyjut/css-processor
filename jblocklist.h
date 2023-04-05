@@ -156,7 +156,7 @@ inline BlockNode<T>::~BlockNode()
 		{
 			delete this->data[i];
 		}
-		delete this->data;
+		delete[] this->data;
 	}
 }
 

@@ -175,8 +175,12 @@ inline void jlinkedlist<T>::clear()
 	while (temp != nullptr)
 	{
 		Node<T> *next = temp->next;
+		delete temp->data;
+		delete temp;
 		temp = next;
 	}
+	head = nullptr;
+	tail = nullptr;
 	length = 0;
 }
 

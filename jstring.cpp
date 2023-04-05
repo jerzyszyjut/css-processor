@@ -10,7 +10,7 @@ jstring::jstring()
 	this->str[this->len] = '\0';
 }
 
-jstring::jstring(const char* str)
+jstring::jstring(const char *str)
 {
 	this->len = strlen(str);
 	this->size = get_block_size(this->len);
@@ -19,7 +19,7 @@ jstring::jstring(const char* str)
 	this->str[this->len] = '\0';
 }
 
-jstring::jstring(const jstring& str)
+jstring::jstring(const jstring &str)
 {
 	this->len = str.len;
 	this->size = str.size;
@@ -28,7 +28,7 @@ jstring::jstring(const jstring& str)
 	this->str[this->len] = '\0';
 }
 
-jstring::jstring(jstring* str)
+jstring::jstring(jstring *str)
 {
 	this->len = str->len;
 	this->size = str->size;
@@ -37,7 +37,7 @@ jstring::jstring(jstring* str)
 	this->str[this->len] = '\0';
 }
 
-jstring::jstring(jstring&& other)
+jstring::jstring(jstring &&other)
 {
 	if (this != &other)
 	{
@@ -57,7 +57,7 @@ jstring::~jstring()
 	}
 }
 
-jstring& jstring::operator=(char str)
+jstring &jstring::operator=(char str)
 {
 	this->len = 1;
 	this->size = get_block_size(this->len);
@@ -70,7 +70,7 @@ jstring& jstring::operator=(char str)
 	return *this;
 }
 
-jstring& jstring::operator=(const char* str)
+jstring &jstring::operator=(const char *str)
 {
 	this->len = strlen(str);
 	this->size = get_block_size(this->len);
@@ -83,7 +83,7 @@ jstring& jstring::operator=(const char* str)
 	return *this;
 }
 
-jstring& jstring::operator=(jstring& other)
+jstring &jstring::operator=(jstring &other)
 {
 	this->len = other.len;
 	this->size = other.size;
@@ -96,7 +96,7 @@ jstring& jstring::operator=(jstring& other)
 	return *this;
 }
 
-jstring& jstring::operator=(jstring&& other)
+jstring &jstring::operator=(jstring &&other)
 {
 	this->len = other.len;
 	this->size = other.size;
@@ -108,13 +108,13 @@ jstring& jstring::operator=(jstring&& other)
 	return *this;
 }
 
-jstring& jstring::operator+=(char str)
+jstring &jstring::operator+=(char str)
 {
 	this->len += 1;
 	if (this->size != get_block_size(this->len))
 	{
 		this->size = get_block_size(this->len);
-		char* new_str = new char[this->size];
+		char *new_str = new char[this->size];
 		strncpy(new_str, this->str, this->len - 1);
 		delete[] this->str;
 		this->str = new_str;
@@ -130,13 +130,13 @@ jstring& jstring::operator+=(char str)
 	return *this;
 }
 
-jstring& jstring::operator+=(const char* str)
+jstring &jstring::operator+=(const char *str)
 {
 	this->len += strlen(str);
 	if (this->size != get_block_size(this->len))
 	{
 		this->size = get_block_size(this->len);
-		char* new_str = new char[this->size];
+		char *new_str = new char[this->size];
 		strncpy(new_str, this->str, this->len - strlen(str));
 		delete[] this->str;
 		this->str = new_str;
@@ -152,13 +152,13 @@ jstring& jstring::operator+=(const char* str)
 	return *this;
 }
 
-jstring& jstring::operator+=(jstring& other)
+jstring &jstring::operator+=(jstring &other)
 {
 	this->len += other.len;
 	if (this->size != get_block_size(this->len))
 	{
 		this->size = get_block_size(this->len);
-		char* new_str = new char[this->size];
+		char *new_str = new char[this->size];
 		strncpy(new_str, this->str, this->len - other.len);
 		delete[] this->str;
 		this->str = new_str;
@@ -181,21 +181,21 @@ jstring jstring::operator+(char str)
 	return new_str;
 }
 
-jstring jstring::operator+(const char* str)
+jstring jstring::operator+(const char *str)
 {
 	jstring new_str(*this);
 	new_str += str;
 	return new_str;
 }
 
-jstring jstring::operator+(jstring& other)
+jstring jstring::operator+(jstring &other)
 {
 	jstring new_str(*this);
 	new_str += other;
 	return new_str;
 }
 
-bool jstring::operator==(const char* str)
+bool jstring::operator==(const char *str)
 {
 	if (this->len != strlen(str))
 		return false;
@@ -207,7 +207,7 @@ bool jstring::operator==(const char* str)
 	return true;
 }
 
-bool jstring::operator==(jstring& other)
+bool jstring::operator==(jstring &other)
 {
 	if (this->len != other.len)
 		return false;
@@ -219,33 +219,33 @@ bool jstring::operator==(jstring& other)
 	return true;
 }
 
-bool jstring::operator!=(const char* str)
+bool jstring::operator!=(const char *str)
 {
 	return !(this->operator==(str));
 }
 
-bool jstring::operator!=(jstring& other)
+bool jstring::operator!=(jstring &other)
 {
 	return !(this->operator==(other));
 }
 
-char& jstring::operator[](size_t index)
+char &jstring::operator[](size_t index)
 {
 	if (index > this->len)
 		throw std::out_of_range("Index out of range");
 	return this->str[index];
 }
 
-const char& jstring::operator[](size_t index) const
+const char &jstring::operator[](size_t index) const
 {
 	if (index > this->len)
 		throw std::out_of_range("Index out of range");
 	return this->str[index];
 }
 
-jstring& jstring::substring(size_t start, size_t count)
+jstring &jstring::substring(size_t start, size_t count)
 {
-	jstring* new_string = new jstring();
+	jstring *new_string = new jstring();
 	new_string->len = count;
 	new_string->size = get_block_size(new_string->len);
 	new_string->str = new char[new_string->size];
@@ -275,7 +275,7 @@ size_t jstring::get_size() const
 	return this->size;
 }
 
-char* jstring::c_str() const
+char *jstring::c_str() const
 {
 	return this->str;
 }
@@ -311,12 +311,12 @@ size_t get_block_size(size_t len)
 	return ((len / STRING_BLOCK_SIZE + 1) * STRING_BLOCK_SIZE) + 1;
 }
 
-std::ostream& operator<<(std::ostream& os, const jstring& str)
+std::ostream &operator<<(std::ostream &os, const jstring &str)
 {
 	return os << str.c_str();
 }
 
-std::istream& operator>>(std::istream& is, jstring& str)
+std::istream &operator>>(std::istream &is, jstring &str)
 {
 	jstring new_str;
 	char c;
