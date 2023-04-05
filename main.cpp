@@ -17,92 +17,6 @@ bool is_a_number(char c)
 	return false;
 }
 
-bool load_input(jblocklist<jstring> *keywords)
-{
-	bool in_section = false, in_attribute = false;
-	int special_character_count = 0;
-	jstring input = "";
-	char c;
-	while ((c = getchar()) != EOF)
-	{
-		if (c < ' ')
-		{
-			continue;
-		}
-
-		if (c == ESCAPE_CSS_PARSING_SPECIAL_CHARACTER)
-		{
-			special_character_count++;
-			if (special_character_count == ESCAPE_CHARACTER_COUNT)
-			{
-				return true;
-			}
-		}
-		else
-		{
-			special_character_count = 0;
-		}
-
-		if (c == '{')
-		{
-			in_section = true;
-			if (input.get_length() > 0 && input[input.get_length() - 1] == ' ')
-			{
-				input = input.substring(0, input.get_length() - 1);
-			}
-			keywords->push_back(&input);
-			input = c;
-			keywords->push_back(&input);
-			input = "";
-		}
-		else if (c == '}')
-		{
-			in_section = false;
-			input = c;
-			keywords->push_back(&input);
-			input = "";
-		}
-		else if (in_section && c == ':')
-		{
-			in_attribute = true;
-			keywords->push_back(&input);
-			input = c;
-			keywords->push_back(&input);
-			input = "";
-		}
-		else if (in_section && in_attribute && c == ';')
-		{
-			in_attribute = false;
-			keywords->push_back(&input);
-			input = "";
-		}
-		else
-		{
-			if (!in_section && !in_attribute)
-			{
-				if (c == ',')
-				{
-					input += c;
-					keywords->push_back(&input);
-					input = "";
-					continue;
-				}
-			}
-
-			if (in_section && !in_attribute)
-			{
-				if (c == ' ')
-				{
-					continue;
-				}
-			}
-
-			input += c;
-		}
-	}
-	return false;
-}
-
 void load_sections(jblocklist<css_section> *sections, jblocklist<jstring> *keywords)
 {
 	css_section section = css_section();
@@ -178,6 +92,93 @@ void load_sections(jblocklist<css_section> *sections, jblocklist<jstring> *keywo
 		}
 	}
 	keywords->clear();
+}
+
+bool load_input(jblocklist<css_section> *sections, jblocklist<jstring> *keywords)
+{
+	bool in_section = false, in_attribute = false;
+	int special_character_count = 0;
+	jstring input = "";
+	char c;
+	while ((c = getchar()) != EOF)
+	{
+		if (c < ' ')
+		{
+			continue;
+		}
+
+		if (c == ESCAPE_CSS_PARSING_SPECIAL_CHARACTER)
+		{
+			special_character_count++;
+			if (special_character_count == ESCAPE_CHARACTER_COUNT)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			special_character_count = 0;
+		}
+
+		if (c == '{')
+		{
+			in_section = true;
+			if (input.get_length() > 0 && input[input.get_length() - 1] == ' ')
+			{
+				input = input.substring(0, input.get_length() - 1);
+			}
+			keywords->push_back(&input);
+			input = c;
+			keywords->push_back(&input);
+			input = "";
+		}
+		else if (c == '}')
+		{
+			in_section = false;
+			input = c;
+			keywords->push_back(&input);
+			input = "";
+			load_sections(sections, keywords);
+		}
+		else if (in_section && c == ':')
+		{
+			in_attribute = true;
+			keywords->push_back(&input);
+			input = c;
+			keywords->push_back(&input);
+			input = "";
+		}
+		else if (in_section && in_attribute && c == ';')
+		{
+			in_attribute = false;
+			keywords->push_back(&input);
+			input = "";
+		}
+		else
+		{
+			if (!in_section && !in_attribute)
+			{
+				if (c == ',')
+				{
+					input += c;
+					keywords->push_back(&input);
+					input = "";
+					continue;
+				}
+			}
+
+			if (in_section && !in_attribute)
+			{
+				if (c == ' ')
+				{
+					continue;
+				}
+			}
+
+			input += c;
+		}
+	}
+	return false;
 }
 
 bool handle_commands(jblocklist<css_section> *sections)
@@ -347,7 +348,7 @@ int main()
 
 	while (true)
 	{
-		if (!load_input(keywords))
+		if (!load_input(sections, keywords))
 			break;
 		load_sections(sections, keywords);
 		if (!handle_commands(sections))
