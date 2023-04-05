@@ -1,0 +1,370 @@
+==15744== Memcheck, a memory error detector
+==15744== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==15744== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==15744== Command: build/Debug/outDebug
+==15744== Parent PID: 4348
+==15744== 
+--15744-- 
+--15744-- Valgrind options:
+--15744--    --leak-check=full
+--15744--    --show-leak-kinds=all
+--15744--    --track-origins=yes
+--15744--    --verbose
+--15744--    --log-file=valgrind1out.txt
+--15744-- Contents of /proc/version:
+--15744--   Linux version 6.2.6-76060206-generic (jenkins@warp.pop-os.org) (x86_64-linux-gnu-gcc-12 (Ubuntu 12.1.0-2ubuntu1~22.04) 12.1.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #202303130630~1679424972~22.04~4a8cde1 SMP PREEMPT_DYNAMIC Tue M
+--15744-- 
+--15744-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--15744-- Page sizes: currently 4096, max supported 4096
+--15744-- Valgrind library directory: /usr/libexec/valgrind
+--15744-- Reading syms from /home/jerzy-studia/dev/css_processor/build/Debug/outDebug
+--15744-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--15744--   Considering /usr/lib/debug/.build-id/61/ef896a699bb1c2e4e231642b2e1688b2f1a61e.debug ..
+--15744--   .. build-id is valid
+--15744-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--15744--    object doesn't have a symbol table
+--15744--    object doesn't have a dynamic symbol table
+--15744-- Scheduler: using generic scheduler lock implementation.
+--15744-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==15744== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-15744-by-jerzy-studia-on-???
+==15744== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-15744-by-jerzy-studia-on-???
+==15744== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-15744-by-jerzy-studia-on-???
+==15744== 
+==15744== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==15744== don't want to do, unless you know exactly what you're doing,
+==15744== or are doing some strange experiment):
+==15744==   /usr/bin/vgdb --pid=15744 ...command...
+==15744== 
+==15744== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==15744==   /path/to/gdb build/Debug/outDebug
+==15744== and then give GDB the following command
+==15744==   target remote | /usr/bin/vgdb --pid=15744
+==15744== --pid is optional if only one valgrind process is running
+==15744== 
+--15744-- REDIR: 0x402aa60 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--15744-- REDIR: 0x402a830 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--15744-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--15744--    object doesn't have a symbol table
+--15744-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--15744--    object doesn't have a symbol table
+==15744== WARNING: new redirection conflicts with existing -- ignoring it
+--15744--     old: 0x0402aa60 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--15744--     new: 0x0402aa60 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
+--15744-- REDIR: 0x4027240 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
+--15744-- REDIR: 0x402afc0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
+--15744-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
+--15744--    object doesn't have a symbol table
+--15744-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+--15744--    object doesn't have a symbol table
+--15744-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--15744--   Considering /usr/lib/debug/.build-id/69/389d485a9793dbe873f0ea2c93e02efaa9aa3d.debug ..
+--15744--   .. build-id is valid
+==15744== WARNING: new redirection conflicts with existing -- ignoring it
+--15744--     old: 0x04b5ece0 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--15744--     new: 0x04b5ece0 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==15744== WARNING: new redirection conflicts with existing -- ignoring it
+--15744--     old: 0x04b5ece0 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--15744--     new: 0x04b5ece0 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+==15744== WARNING: new redirection conflicts with existing -- ignoring it
+--15744--     old: 0x04b5ece0 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--15744--     new: 0x04b5ece0 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==15744== WARNING: new redirection conflicts with existing -- ignoring it
+--15744--     old: 0x04b5ece0 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--15744--     new: 0x04b5ece0 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+--15744-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--15744--   Considering /usr/lib/debug/.build-id/27/e82301dba6c3f644404d504e1bb1c97894b433.debug ..
+--15744--   .. build-id is valid
+--15744-- REDIR: 0x4b617a0 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b61a60 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b61360 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b7fd50 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62750 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b7e5c0 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62c90 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b7e3f0 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b612e0 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b619e0 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62620 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+==15744== Preferring higher priority redirection:
+--15744--     old: 0x04c59940 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
+--15744--     new: 0x04c59940 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
+--15744-- REDIR: 0x4b7e470 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62a60 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b7ea30 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b618b0 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62af0 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b614a0 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b7e4f0 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b61250 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62be0 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62500 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b6a5f0 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b64090 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b61410 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62b90 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b61720 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b61950 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b629d0 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62470 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b61b80 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62850 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b62b40 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b64000 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4b61820 (libc.so.6:strncat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--15744-- REDIR: 0x4c56790 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
+--15744-- REDIR: 0x4b5e120 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
+--15744-- REDIR: 0x4c56960 (libc.so.6:__strlen_avx2) redirected to 0x484ed10 (strlen)
+--15744-- REDIR: 0x4c52c00 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852010 (bcmp)
+--15744-- REDIR: 0x4c51ac0 (libc.so.6:__strcmp_avx2) redirected to 0x484fbd0 (strcmp)
+--15744-- REDIR: 0x491d9b0 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4848fa0 (operator new(unsigned long))
+--15744-- REDIR: 0x491da10 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x484a280 (operator new[](unsigned long))
+--15744-- REDIR: 0x4c581c0 (libc.so.6:__strncpy_avx2) redirected to 0x484efe0 (strncpy)
+--15744-- REDIR: 0x491bc80 (libstdc++.so.6:operator delete[](void*)) redirected to 0x484ca20 (operator delete[](void*))
+--15744-- REDIR: 0x491bc60 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x484bb00 (operator delete(void*, unsigned long))
+==15744== Mismatched free() / delete / delete []
+==15744==    at 0x484BB6F: operator delete(void*, unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10F382: BlockNode<jstring>::~BlockNode() (jblocklist.h:159)
+==15744==    by 0x10EB7E: jblocklist<jstring>::clear() (jblocklist.h:317)
+==15744==    by 0x10D3BA: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:180)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744==  Address 0x4de0080 is 0 bytes inside a block of size 64 alloc'd
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10F199: BlockNode<jstring>::BlockNode(int, jstring&) (jblocklist.h:143)
+==15744==    by 0x10E5D4: jblocklist<jstring>::push_back(jstring*) (jblocklist.h:188)
+==15744==    by 0x10CBEF: load_input(jblocklist<jstring>*) (main.cpp:53)
+==15744==    by 0x10E49F: main (main.cpp:350)
+==15744== 
+--15744-- REDIR: 0x4c59900 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4853440 (mempcpy)
+==15744== Mismatched free() / delete / delete []
+==15744==    at 0x484BB6F: operator delete(void*, unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10F50A: BlockNode<css_section>::~BlockNode() (jblocklist.h:159)
+==15744==    by 0x10F54C: jblocklist<css_section>::clear() (jblocklist.h:317)
+==15744==    by 0x10F13B: jblocklist<css_section>::~jblocklist() (jblocklist.h:180)
+==15744==    by 0x10E4E3: main (main.cpp:357)
+==15744==  Address 0x58a5770 is 0 bytes inside a block of size 64 alloc'd
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10F288: BlockNode<css_section>::BlockNode(int, css_section&) (jblocklist.h:143)
+==15744==    by 0x10E8DA: jblocklist<css_section>::push_back(css_section*) (jblocklist.h:188)
+==15744==    by 0x10CEEE: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:120)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+--15744-- REDIR: 0x4b5e460 (libc.so.6:free) redirected to 0x484b210 (free)
+==15744== 
+==15744== HEAP SUMMARY:
+==15744==     in use at exit: 22,368,318 bytes in 423,132 blocks
+==15744==   total heap usage: 2,196,849 allocs, 1,773,717 frees, 128,964,386 bytes allocated
+==15744== 
+==15744== Searching for pointers to 423,132 not-freed blocks
+==15744== Checked 148,480 bytes
+==15744== 
+==15744== 168 bytes in 7 blocks are possibly lost in loss record 1 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B634: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 512 bytes in 8 blocks are possibly lost in loss record 2 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B8D6: Node<attribute>::Node(attribute&) (jlinkedlist.h:76)
+==15744==    by 0x10B646: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 520 bytes in 8 blocks are possibly lost in loss record 3 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10BACF: jstring::jstring(jstring const&) (jstring.cpp:26)
+==15744==    by 0x10B876: attribute::attribute(attribute const&) (css_section.h:5)
+==15744==    by 0x10B8E8: Node<attribute>::Node(attribute&) (jlinkedlist.h:76)
+==15744==    by 0x10B646: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 650 bytes in 10 blocks are possibly lost in loss record 4 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10BACF: jstring::jstring(jstring const&) (jstring.cpp:26)
+==15744==    by 0x10B85B: attribute::attribute(attribute const&) (css_section.h:5)
+==15744==    by 0x10B8E8: Node<attribute>::Node(attribute&) (jlinkedlist.h:76)
+==15744==    by 0x10B646: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 4,355 bytes in 67 blocks are indirectly lost in loss record 5 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10C6C5: jstring::substring(unsigned long, unsigned long) (jstring.cpp:251)
+==15744==    by 0x10D63B: handle_commands(jblocklist<css_section>*) (main.cpp:206)
+==15744==    by 0x10E4C5: main (main.cpp:353)
+==15744== 
+==15744== 4,355 bytes in 67 blocks are indirectly lost in loss record 6 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10C6C5: jstring::substring(unsigned long, unsigned long) (jstring.cpp:251)
+==15744==    by 0x10D684: handle_commands(jblocklist<css_section>*) (main.cpp:207)
+==15744==    by 0x10E4C5: main (main.cpp:353)
+==15744== 
+==15744== 4,355 bytes in 67 blocks are definitely lost in loss record 7 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B9D9: jstring::jstring() (jstring.cpp:9)
+==15744==    by 0x10C68D: jstring::substring(unsigned long, unsigned long) (jstring.cpp:248)
+==15744==    by 0x10D63B: handle_commands(jblocklist<css_section>*) (main.cpp:206)
+==15744==    by 0x10E4C5: main (main.cpp:353)
+==15744== 
+==15744== 4,355 bytes in 67 blocks are definitely lost in loss record 8 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B9D9: jstring::jstring() (jstring.cpp:9)
+==15744==    by 0x10C68D: jstring::substring(unsigned long, unsigned long) (jstring.cpp:248)
+==15744==    by 0x10D684: handle_commands(jblocklist<css_section>*) (main.cpp:207)
+==15744==    by 0x10E4C5: main (main.cpp:353)
+==15744== 
+==15744== 6,499 (2,144 direct, 4,355 indirect) bytes in 67 blocks are definitely lost in loss record 9 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10C682: jstring::substring(unsigned long, unsigned long) (jstring.cpp:248)
+==15744==    by 0x10D63B: handle_commands(jblocklist<css_section>*) (main.cpp:206)
+==15744==    by 0x10E4C5: main (main.cpp:353)
+==15744== 
+==15744== 6,499 (2,144 direct, 4,355 indirect) bytes in 67 blocks are definitely lost in loss record 10 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10C682: jstring::substring(unsigned long, unsigned long) (jstring.cpp:248)
+==15744==    by 0x10D684: handle_commands(jblocklist<css_section>*) (main.cpp:207)
+==15744==    by 0x10E4C5: main (main.cpp:353)
+==15744== 
+==15744== 68,250 bytes in 1,050 blocks are indirectly lost in loss record 11 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10BDFE: jstring::operator=(jstring&) (jstring.cpp:92)
+==15744==    by 0x10ADE2: css_section::addAttribute(jstring, jstring) (css_section.cpp:157)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 147,600 bytes in 6,150 blocks are indirectly lost in loss record 12 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B6FA: jlinkedlist<jstring>::push_back(jstring&) (jlinkedlist.h:106)
+==15744==    by 0x10AF1F: css_section::addSelector(jstring) (css_section.cpp:168)
+==15744==    by 0x10D0FF: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:149)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 874,560 bytes in 27,330 blocks are indirectly lost in loss record 13 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B952: Node<jstring>::Node(jstring&) (jlinkedlist.h:76)
+==15744==    by 0x10B70C: jlinkedlist<jstring>::push_back(jstring&) (jlinkedlist.h:106)
+==15744==    by 0x10AF1F: css_section::addSelector(jstring) (css_section.cpp:168)
+==15744==    by 0x10D0FF: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:149)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 1,154,736 bytes in 48,114 blocks are indirectly lost in loss record 14 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B634: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 1,376,700 bytes in 21,180 blocks are definitely lost in loss record 15 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B9D9: jstring::jstring() (jstring.cpp:9)
+==15744==    by 0x10C68D: jstring::substring(unsigned long, unsigned long) (jstring.cpp:248)
+==15744==    by 0x10CBCA: load_input(jblocklist<jstring>*) (main.cpp:51)
+==15744==    by 0x10E49F: main (main.cpp:350)
+==15744== 
+==15744== 1,539,900 bytes in 21,180 blocks are indirectly lost in loss record 16 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10C6C5: jstring::substring(unsigned long, unsigned long) (jstring.cpp:251)
+==15744==    by 0x10CBCA: load_input(jblocklist<jstring>*) (main.cpp:51)
+==15744==    by 0x10E49F: main (main.cpp:350)
+==15744== 
+==15744== 1,972,290 bytes in 27,330 blocks are indirectly lost in loss record 17 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10BACF: jstring::jstring(jstring const&) (jstring.cpp:26)
+==15744==    by 0x10B964: Node<jstring>::Node(jstring&) (jlinkedlist.h:76)
+==15744==    by 0x10B70C: jlinkedlist<jstring>::push_back(jstring&) (jlinkedlist.h:106)
+==15744==    by 0x10AF1F: css_section::addSelector(jstring) (css_section.cpp:168)
+==15744==    by 0x10D0FF: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:149)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 2,217,660 (677,760 direct, 1,539,900 indirect) bytes in 21,180 blocks are definitely lost in loss record 18 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10C682: jstring::substring(unsigned long, unsigned long) (jstring.cpp:248)
+==15744==    by 0x10CBCA: load_input(jblocklist<jstring>*) (main.cpp:51)
+==15744==    by 0x10E49F: main (main.cpp:350)
+==15744== 
+==15744== 3,502,770 (508,320 direct, 2,994,450 indirect) bytes in 21,180 blocks are definitely lost in loss record 19 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B6FA: jlinkedlist<jstring>::push_back(jstring&) (jlinkedlist.h:106)
+==15744==    by 0x10AF1F: css_section::addSelector(jstring) (css_section.cpp:168)
+==15744==    by 0x10D0FF: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:149)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 4,434,688 bytes in 69,292 blocks are indirectly lost in loss record 20 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B8D6: Node<attribute>::Node(attribute&) (jlinkedlist.h:76)
+==15744==    by 0x10B646: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 4,503,850 bytes in 69,290 blocks are indirectly lost in loss record 21 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10BACF: jstring::jstring(jstring const&) (jstring.cpp:26)
+==15744==    by 0x10B85B: attribute::attribute(attribute const&) (css_section.h:5)
+==15744==    by 0x10B8E8: Node<attribute>::Node(attribute&) (jlinkedlist.h:76)
+==15744==    by 0x10B646: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 4,577,810 bytes in 68,242 blocks are indirectly lost in loss record 22 of 23
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10BACF: jstring::jstring(jstring const&) (jstring.cpp:26)
+==15744==    by 0x10B876: attribute::attribute(attribute const&) (css_section.h:5)
+==15744==    by 0x10B8E8: Node<attribute>::Node(attribute&) (jlinkedlist.h:76)
+==15744==    by 0x10B646: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 15,247,630 (508,296 direct, 14,739,334 indirect) bytes in 21,179 blocks are definitely lost in loss record 23 of 23
+==15744==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10B634: jlinkedlist<attribute>::push_back(attribute&) (jlinkedlist.h:106)
+==15744==    by 0x10AE65: css_section::addAttribute(jstring, jstring) (css_section.cpp:161)
+==15744==    by 0x10D30A: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:174)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== LEAK SUMMARY:
+==15744==    definitely lost: 3,084,074 bytes in 84,987 blocks
+==15744==    indirectly lost: 19,282,394 bytes in 338,112 blocks
+==15744==      possibly lost: 1,850 bytes in 33 blocks
+==15744==    still reachable: 0 bytes in 0 blocks
+==15744==         suppressed: 0 bytes in 0 blocks
+==15744== 
+==15744== ERROR SUMMARY: 37787 errors from 14 contexts (suppressed: 0 from 0)
+==15744== 
+==15744== 2648 errors in context 1 of 14:
+==15744== Mismatched free() / delete / delete []
+==15744==    at 0x484BB6F: operator delete(void*, unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10F50A: BlockNode<css_section>::~BlockNode() (jblocklist.h:159)
+==15744==    by 0x10F54C: jblocklist<css_section>::clear() (jblocklist.h:317)
+==15744==    by 0x10F13B: jblocklist<css_section>::~jblocklist() (jblocklist.h:180)
+==15744==    by 0x10E4E3: main (main.cpp:357)
+==15744==  Address 0x58a5770 is 0 bytes inside a block of size 64 alloc'd
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10F288: BlockNode<css_section>::BlockNode(int, css_section&) (jblocklist.h:143)
+==15744==    by 0x10E8DA: jblocklist<css_section>::push_back(css_section*) (jblocklist.h:188)
+==15744==    by 0x10CEEE: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:120)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744== 
+==15744== 
+==15744== 35127 errors in context 2 of 14:
+==15744== Mismatched free() / delete / delete []
+==15744==    at 0x484BB6F: operator delete(void*, unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10F382: BlockNode<jstring>::~BlockNode() (jblocklist.h:159)
+==15744==    by 0x10EB7E: jblocklist<jstring>::clear() (jblocklist.h:317)
+==15744==    by 0x10D3BA: load_sections(jblocklist<css_section>*, jblocklist<jstring>*) (main.cpp:180)
+==15744==    by 0x10E4B9: main (main.cpp:352)
+==15744==  Address 0x4de0080 is 0 bytes inside a block of size 64 alloc'd
+==15744==    at 0x484A2F3: operator new[](unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==15744==    by 0x10F199: BlockNode<jstring>::BlockNode(int, jstring&) (jblocklist.h:143)
+==15744==    by 0x10E5D4: jblocklist<jstring>::push_back(jstring*) (jblocklist.h:188)
+==15744==    by 0x10CBEF: load_input(jblocklist<jstring>*) (main.cpp:53)
+==15744==    by 0x10E49F: main (main.cpp:350)
+==15744== 
+==15744== ERROR SUMMARY: 37787 errors from 14 contexts (suppressed: 0 from 0)

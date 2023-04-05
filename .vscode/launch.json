@@ -29,7 +29,7 @@
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "/home/jerzy-studia/dev/css_processor",
-      "program": "/home/jerzy-studia/dev/css_processor/build/Release/outRelease",
+      "program": "/home/jerzy-studia/dev/css_processor/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

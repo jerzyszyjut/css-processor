@@ -2,13 +2,29 @@
 #include "css_section.h"
 #include "jstring.h"
 
+attribute::attribute(jstring name, jstring value)
+{
+	this->name = name;
+	this->value = value;
+}
+
+attribute::attribute(attribute *other)
+{
+	this->name = other->name;
+	this->value = other->value;
+}
+
+attribute::~attribute()
+{
+}
+
 css_section::css_section()
 {
 	this->selectors = jlinkedlist<jstring>();
 	this->attributes = jlinkedlist<attribute>();
 }
 
-css_section::css_section(css_section* other)
+css_section::css_section(css_section *other)
 {
 	this->selectors = other->selectors;
 	this->attributes = other->attributes;
@@ -22,12 +38,12 @@ css_section::~css_section()
 
 bool css_section::isEmpty()
 {
-	if(this->attributes.size() == 0)
+	if (this->attributes.size() == 0)
 		return true;
 	return false;
 }
 
-bool css_section::deleteAtribute(jstring* name)
+bool css_section::deleteAtribute(jstring *name)
 {
 	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
@@ -40,7 +56,7 @@ bool css_section::deleteAtribute(jstring* name)
 	return false;
 }
 
-jstring* css_section::getAttribute(jstring* name)
+jstring *css_section::getAttribute(jstring *name)
 {
 	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
@@ -52,14 +68,14 @@ jstring* css_section::getAttribute(jstring* name)
 	return NULL;
 }
 
-jstring* css_section::getAttribute(int index)
+jstring *css_section::getAttribute(int index)
 {
-	if(index < 0 || index >= this->attributes.size())
+	if (index < 0 || index >= this->attributes.size())
 		return NULL;
 	int i = 0;
 	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
 	{
-		attribute* attr = &it;
+		attribute *attr = &it;
 		if (i == index)
 		{
 			return &attr->value;
@@ -79,7 +95,7 @@ int css_section::getSelectorCount()
 	return this->selectors.size();
 }
 
-int css_section::getAttributeOccurances(jstring* selector)
+int css_section::getAttributeOccurances(jstring *selector)
 {
 	int count = 0;
 	for (jlinkedlist<attribute>::iterator it = this->attributes.begin(); it != this->attributes.end(); it++)
@@ -92,7 +108,7 @@ int css_section::getAttributeOccurances(jstring* selector)
 	return count;
 }
 
-int css_section::getSelectorOccurances(jstring* selector)
+int css_section::getSelectorOccurances(jstring *selector)
 {
 	int count = 0;
 	for (jlinkedlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
@@ -105,9 +121,9 @@ int css_section::getSelectorOccurances(jstring* selector)
 	return count;
 }
 
-jstring* css_section::getSelector(int index)
+jstring *css_section::getSelector(int index)
 {
-	if(index < 0 || index >= this->selectors.size())
+	if (index < 0 || index >= this->selectors.size())
 		return NULL;
 	int i = 0;
 	for (jlinkedlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
@@ -121,7 +137,7 @@ jstring* css_section::getSelector(int index)
 	return NULL;
 }
 
-bool css_section::selectorExists(jstring* selector)
+bool css_section::selectorExists(jstring *selector)
 {
 	for (jlinkedlist<jstring>::iterator it = this->selectors.begin(); it != this->selectors.end(); it++)
 	{
@@ -135,23 +151,21 @@ bool css_section::selectorExists(jstring* selector)
 
 void css_section::addAttribute(jstring name, jstring value)
 {
-	jstring* existing_attribute = this->getAttribute(&name);
+	jstring *existing_attribute = this->getAttribute(&name);
 	if (existing_attribute != NULL)
 	{
 		*existing_attribute = value;
 		return;
 	}
-	attribute* attr = new attribute;
-	attr->name = name;
-	attr->value = value;
+	attribute attr(name, value);
 	this->attributes.push_back(attr);
 }
 
 void css_section::addSelector(jstring selector)
 {
-	if(this->selectorExists(&selector))
+	if (this->selectorExists(&selector))
 		return;
-	this->selectors.push_back(new jstring(selector));
+	this->selectors.push_back(selector);
 }
 
 void css_section::print()

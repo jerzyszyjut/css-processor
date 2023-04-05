@@ -8,36 +8,46 @@
 
 using namespace std;
 
-bool is_a_number(char c) {
-	if (c >= '0' && c <= '9') {
+bool is_a_number(char c)
+{
+	if (c >= '0' && c <= '9')
+	{
 		return true;
 	}
 	return false;
 }
 
-bool load_input(jblocklist<jstring>* keywords) {
+bool load_input(jblocklist<jstring> *keywords)
+{
 	bool in_section = false, in_attribute = false;
 	int special_character_count = 0;
 	jstring input = "";
 	char c;
-	while ((c = getchar()) != EOF) {
-		if (c < ' ') {
+	while ((c = getchar()) != EOF)
+	{
+		if (c < ' ')
+		{
 			continue;
 		}
 
-		if (c == ESCAPE_CSS_PARSING_SPECIAL_CHARACTER) {
+		if (c == ESCAPE_CSS_PARSING_SPECIAL_CHARACTER)
+		{
 			special_character_count++;
-			if (special_character_count == ESCAPE_CHARACTER_COUNT) {
+			if (special_character_count == ESCAPE_CHARACTER_COUNT)
+			{
 				return true;
 			}
 		}
-		else {
+		else
+		{
 			special_character_count = 0;
 		}
 
-		if (c == '{') {
+		if (c == '{')
+		{
 			in_section = true;
-			if (input.get_length() > 0 && input[input.get_length() - 1] == ' ') {
+			if (input.get_length() > 0 && input[input.get_length() - 1] == ' ')
+			{
 				input = input.substring(0, input.get_length() - 1);
 			}
 			keywords->push_back(&input);
@@ -45,27 +55,33 @@ bool load_input(jblocklist<jstring>* keywords) {
 			keywords->push_back(&input);
 			input = "";
 		}
-		else if (c == '}') {
+		else if (c == '}')
+		{
 			in_section = false;
 			input = c;
 			keywords->push_back(&input);
 			input = "";
 		}
-		else if (in_section && c == ':') {
+		else if (in_section && c == ':')
+		{
 			in_attribute = true;
 			keywords->push_back(&input);
 			input = c;
 			keywords->push_back(&input);
 			input = "";
 		}
-		else if (in_section && in_attribute && c == ';') {
+		else if (in_section && in_attribute && c == ';')
+		{
 			in_attribute = false;
 			keywords->push_back(&input);
 			input = "";
 		}
-		else {
-			if (!in_section && !in_attribute) {
-				if (c == ',') {
+		else
+		{
+			if (!in_section && !in_attribute)
+			{
+				if (c == ',')
+				{
 					input += c;
 					keywords->push_back(&input);
 					input = "";
@@ -73,8 +89,10 @@ bool load_input(jblocklist<jstring>* keywords) {
 				}
 			}
 
-			if (in_section && !in_attribute) {
-				if (c == ' ') {
+			if (in_section && !in_attribute)
+			{
+				if (c == ' ')
+				{
 					continue;
 				}
 			}
@@ -85,57 +103,75 @@ bool load_input(jblocklist<jstring>* keywords) {
 	return false;
 }
 
-void load_sections(jblocklist<css_section>* sections, jblocklist<jstring>* keywords) {
-	css_section* section = new css_section();
+void load_sections(jblocklist<css_section> *sections, jblocklist<jstring> *keywords)
+{
+	css_section section = css_section();
 	bool in_section = false;
-	jstring* previous_keyword = NULL;
-	for (jblocklist<jstring>::iterator it = keywords->begin(); it != keywords->end(); it++) {
-		if (*it == "{") {
+	jstring *previous_keyword = NULL;
+	for (jblocklist<jstring>::iterator it = keywords->begin(); it != keywords->end(); it++)
+	{
+		if (*it == "{")
+		{
 			in_section = true;
 		}
-		else if (*it == "}") {
+		else if (*it == "}")
+		{
 			in_section = false;
-			sections->push_back(section);
-			section = new css_section();
+			sections->push_back(&section);
+			section = css_section();
 		}
-		else {
-			if (!in_section) {
+		else
+		{
+			if (!in_section)
+			{
 				jstring trimmed_selector_value, value = *it;
 				bool reached_proper_string = false;
-				for (jstring::iterator it_2 = value.begin(); it_2 != value.end(); it_2++) {
-					if (*it_2 == ',') continue;
-					if (*it_2 == ' ') {
-						if (reached_proper_string) {
+				for (jstring::iterator it_2 = value.begin(); it_2 != value.end(); it_2++)
+				{
+					if (*it_2 == ',')
+						continue;
+					if (*it_2 == ' ')
+					{
+						if (reached_proper_string)
+						{
 							trimmed_selector_value += *it_2;
 						}
 					}
-					else {
+					else
+					{
 						reached_proper_string = true;
 						trimmed_selector_value += *it_2;
 					}
 				}
 
-				if (trimmed_selector_value.get_length() > 0) {
-					section->addSelector(trimmed_selector_value);
+				if (trimmed_selector_value.get_length() > 0)
+				{
+					section.addSelector(trimmed_selector_value);
 				}
 			}
-			else if (in_section) {
-				if (*it == ":") {
+			else if (in_section)
+			{
+				if (*it == ":")
+				{
 					jstring trimmed_attribute_value, value = *(++it);
 					bool reached_proper_string = false;
-					for (jstring::iterator it_2 = value.begin(); it_2 != value.end(); it_2++) {
-						if (*it_2 == ' ') {
-							if (reached_proper_string) {
+					for (jstring::iterator it_2 = value.begin(); it_2 != value.end(); it_2++)
+					{
+						if (*it_2 == ' ')
+						{
+							if (reached_proper_string)
+							{
 								trimmed_attribute_value += *it_2;
 							}
 						}
-						else {
+						else
+						{
 							reached_proper_string = true;
 							trimmed_attribute_value += *it_2;
 						}
 					}
-					
-					section->addAttribute(*previous_keyword, trimmed_attribute_value);
+
+					section.addAttribute(*previous_keyword, trimmed_attribute_value);
 				}
 				previous_keyword = &it;
 			}
@@ -144,121 +180,156 @@ void load_sections(jblocklist<css_section>* sections, jblocklist<jstring>* keywo
 	keywords->clear();
 }
 
-bool handle_commands(jblocklist<css_section>* sections) {
+bool handle_commands(jblocklist<css_section> *sections)
+{
 	jstring command_line;
-	while (cin >> command_line || (!cin.eof() || command_line.get_length() > 0)) {
-		if(command_line.get_length() == 0) continue;
+	while (cin >> command_line || (!cin.eof() || command_line.get_length() > 0))
+	{
+		if (command_line.get_length() == 0)
+			continue;
 
 		if (command_line[0] == ESCAPE_COMMAND_PARSING_SPECIAL_CHARACTER)
 			return true;
 
-		if (command_line[0] == '?') {
+		if (command_line[0] == '?')
+		{
 			cout << "? == " << sections->size() << endl;
 			continue;
 		}
 
 		int first_comma_position = command_line.find(',');
 
-		if (command_line[first_comma_position + 2] != ',') continue;
+		if (command_line[first_comma_position + 2] != ',')
+			continue;
 
 		char command = command_line[first_comma_position + 1];
 		jstring selector = command_line.substring(0, first_comma_position);
 		jstring value = command_line.substring(first_comma_position + 3, command_line.get_length() - first_comma_position - 3);
 
-		if (command == 'S') {
-			if (is_a_number(selector[0])) {
+		if (command == 'S')
+		{
+			if (is_a_number(selector[0]))
+			{
 				int index = atoi(selector.c_str()) - 1;
 
-				if (index < 0 || index >= sections->size()) {
+				if (index < 0 || index >= sections->size())
+				{
 					continue;
 				}
 
 				jblocklist<css_section>::iterator it = sections->begin();
-				for (int i = 0; i < index; i++) {
+				for (int i = 0; i < index; i++)
+				{
 					it++;
 				}
 
-				if (value[0] == '?') {
+				if (value[0] == '?')
+				{
 					cout << selector << "," << command << "," << value << " == " << (&it)->getSelectorCount() << endl;
 				}
-				else if (is_a_number(value[0])) {
+				else if (is_a_number(value[0]))
+				{
 					int selector_index = atoi(value.c_str()) - 1;
-					jstring* selector_name = (&it)->getSelector(selector_index);
-					if (selector_name == NULL) continue;
+					jstring *selector_name = (&it)->getSelector(selector_index);
+					if (selector_name == NULL)
+						continue;
 					cout << selector << "," << command << "," << value << " == " << *selector_name << endl;
 				}
 			}
-			else if (value[0] == '?') {
+			else if (value[0] == '?')
+			{
 				int occurance_count = 0;
-				for (jblocklist<css_section>::iterator it = sections->begin(); it != sections->end(); it++) {
+				for (jblocklist<css_section>::iterator it = sections->begin(); it != sections->end(); it++)
+				{
 					occurance_count += (&it)->getSelectorOccurances(&selector);
 				}
 				cout << selector << "," << command << "," << value << " == " << occurance_count << endl;
 			}
 		}
-		else if (command == 'A') {
-			if (is_a_number(selector[0])) {
+		else if (command == 'A')
+		{
+			if (is_a_number(selector[0]))
+			{
 				int index = atoi(selector.c_str()) - 1;
 
-				if (index < 0 || index >= sections->size()) {
+				if (index < 0 || index >= sections->size())
+				{
 					continue;
 				}
 
 				jblocklist<css_section>::iterator it = sections->begin();
-				for (int i = 0; i < index; i++) {
+				for (int i = 0; i < index; i++)
+				{
 					it++;
 				}
 
-				if (value[0] == '?') {
+				if (value[0] == '?')
+				{
 					cout << selector << "," << command << "," << value << " == " << (&it)->getAttributeCount() << endl;
 				}
-				else {
-					jstring* selector_name = (&it)->getAttribute(&value);
-					if (selector_name == NULL) continue;
+				else
+				{
+					jstring *selector_name = (&it)->getAttribute(&value);
+					if (selector_name == NULL)
+						continue;
 					cout << selector << "," << command << "," << value << " == " << *selector_name << endl;
 				}
 			}
-			else if (value[0] == '?') {
+			else if (value[0] == '?')
+			{
 				int occurance_count = 0;
-				for (jblocklist<css_section>::iterator it = sections->begin(); it != sections->end(); it++) {
+				for (jblocklist<css_section>::iterator it = sections->begin(); it != sections->end(); it++)
+				{
 					occurance_count += (&it)->getAttributeOccurances(&selector);
 				}
 				cout << selector << "," << command << "," << value << " == " << occurance_count << endl;
 			}
 		}
-		else if (command == 'E') {
-			css_section* last_section = NULL;
-			for (jblocklist<css_section>::reverse_iterator it = sections->rbegin(); it != sections->rend(); it++) {
-				if ((&it)->selectorExists(&selector)) {
+		else if (command == 'E')
+		{
+			css_section *last_section = NULL;
+			for (jblocklist<css_section>::reverse_iterator it = sections->rbegin(); it != sections->rend(); it++)
+			{
+				if ((&it)->selectorExists(&selector))
+				{
 					last_section = &(*it);
 					break;
 				}
 			}
-			if (last_section == NULL) continue;
-			jstring* attribute = last_section->getAttribute(&value);
-			if (attribute == NULL) continue;
+			if (last_section == NULL)
+				continue;
+			jstring *attribute = last_section->getAttribute(&value);
+			if (attribute == NULL)
+				continue;
 			cout << selector << "," << command << "," << value << " == " << *(attribute) << endl;
 		}
-		else if (command == 'D') {
+		else if (command == 'D')
+		{
 			int index = atoi(selector.c_str()) - 1;
 
-			if (index < 0 || index >= sections->size()) {
+			if (index < 0 || index >= sections->size())
+			{
 				continue;
 			}
 
 			jblocklist<css_section>::iterator it = sections->begin();
-			for (int i = 0; i < index; i++) {
+			for (int i = 0; i < index; i++)
+			{
 				it++;
 			}
 
-			if (value[0] == '*') {
+			if (value[0] == '*')
+			{
 				sections->erase(&it);
 				cout << selector << "," << command << "," << value << " == deleted" << endl;
 			}
-			else {
-				if ((&it)->getAttribute(&value) != NULL) {
+			else
+			{
+				if ((&it)->getAttribute(&value) != NULL)
+				{
 					(&it)->deleteAtribute(&value);
-					if ((&it)->isEmpty()) {
+					if ((&it)->isEmpty())
+					{
 						sections->erase(&it);
 					}
 					cout << selector << "," << command << "," << value << " == deleted" << endl;
@@ -269,16 +340,22 @@ bool handle_commands(jblocklist<css_section>* sections) {
 	return false;
 }
 
-int main() {
-	jblocklist<jstring>* keywords = new jblocklist<jstring>();
-	jblocklist<css_section>* sections = new jblocklist<css_section>();
+int main()
+{
+	jblocklist<jstring> *keywords = new jblocklist<jstring>();
+	jblocklist<css_section> *sections = new jblocklist<css_section>();
 
 	while (true)
 	{
-		if (!load_input(keywords)) break;
+		if (!load_input(keywords))
+			break;
 		load_sections(sections, keywords);
-		if (!handle_commands(sections)) break;
+		if (!handle_commands(sections))
+			break;
 	}
+
+	delete sections;
+	delete keywords;
 
 	return 0;
 }
